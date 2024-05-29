@@ -1,22 +1,22 @@
 {
     "Inventory": {
         "create": {
-            "id": "",
-            "name": "",
-            "description": "",
+            "id": "ID",
+            "name": "NAME",
+            "description": "DESCRIPTION",
             "category": [
                 "tela",
                 "hilo",
                 "botones"
             ],
-            "prooveedor": "",
-            "price": 0,
-            "unit": "",
-            "stock": 0,
-            "fdate": "",
-            "vdate": "",
-            "ubication": "",
-            "notes": ""
+            "prooveedor": "SUPLIER",
+            "price": "PRICE",
+            "unit": "UNIT",
+            "stock": "STOCK",
+            "fdate": "ACQUISITION DATE",
+            "vdate": "DUE DATE",
+            "ubication": "UBICATION",
+            "notes": "NOTES"
         },
         "Modify": [
             "id",
@@ -36,24 +36,16 @@
 
     "Products": {
         "create": {
-            "id": "",
-            "cantidad tela": "",
-            "time": "",
-            "salary": 0
+            "id": "ID",
+            "cantidad tela": "CUANTITY",
+            "time": "TIME",
+            "salary": "SALARY"
         },
         "Modify": [
             "id",
-            "name",
-            "description",
-            "category",
-            "prooveedor",
-            "price",
-            "unit",
-            "stock",
-            "fdate",
-            "vdate",
-            "ubication",
-            "notes"
+            "cantidad tela",
+            "time",
+            "salary"
         ]
     }
 }
