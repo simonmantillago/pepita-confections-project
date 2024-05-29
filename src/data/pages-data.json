@@ -1,0 +1,37 @@
+{
+    "Inventory": {
+        "create": {
+            "tag": "input",
+            "name": "input",
+            "description": "input",
+            "category": [
+                "tela",
+                "hilo",
+                "botones"
+            ],
+            "suplier": "input",
+            "price": "number",
+            "unit": [
+                "m",
+                "cm",
+                "roll",
+                "unity",
+                "box"
+            ],
+            "stock": "number",
+            "buydate": "date",
+            "duedate": "date",
+            "ubication": "input",
+            "notes": "input"
+        }
+    },
+
+    "Products": {
+        "create": {
+            "tag": "input",
+            "cuantity": "number",
+            "time": "number",
+            "salary": "number"
+        }
+    }
+}

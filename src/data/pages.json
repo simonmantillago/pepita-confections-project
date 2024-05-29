@@ -1,0 +1,38 @@
+{
+    "page-1":{
+        "title":"PEPITA",
+        "options":[
+            "Inventory",
+            "Products",
+            "Reports"]
+        
+        }
+    ,
+    
+    "page-2":{
+        "title":"Inventory",
+        "options":[
+            "create",
+            "search"
+        ]
+        
+        },
+    
+    
+    "page-3":{
+        "title":"Products",
+        "options":[
+            "create",
+            "search"
+        ]
+        
+    },
+    
+    "page-4":{
+        "title":"Reports",
+        "options":[
+            "others"
+        ]
+        
+    }
+}
