@@ -13,9 +13,7 @@
         "title":"Inventory",
         "options":[
             "create",
-            "Modify",
-            "Delete",
-            "Search"
+            "search"
         ]
         
         },
@@ -25,9 +23,7 @@
         "title":"Products",
         "options":[
             "create",
-            "Modify",
-            "Delete",
-            "Search"
+            "search"
         ]
         
     },
@@ -35,10 +31,7 @@
     "page-4":{
         "title":"Reports",
         "options":[
-            "create",
-            "Modify",
-            "Delete",
-            "Search"
+            "others"
         ]
         
     }

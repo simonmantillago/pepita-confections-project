@@ -10,42 +10,28 @@
                 "botones"
             ],
             "suplier": "input",
-            "price": "input",
-            "unit": "input",
-            "stock": "input",
+            "price": "number",
+            "unit": [
+                "m",
+                "cm",
+                "roll",
+                "unity",
+                "box"
+            ],
+            "stock": "number",
             "buydate": "date",
             "duedate": "date",
             "ubication": "input",
             "notes": "input"
-        },
-        "Modify": [
-            "tag",
-            "name",
-            "description",
-            "category",
-            "suplier",
-            "price",
-            "unit",
-            "stock",
-            "adate",
-            "ddate",
-            "ubication",
-            "notes"
-        ]
+        }
     },
 
     "Products": {
         "create": {
-            "tag": "TAG",
-            "cuantity": "CUANTITY",
-            "time": "TIME",
-            "salary": "SALARY"
-        },
-        "Modify": [
-            "tag",
-            "cantidad tela",
-            "time",
-            "salary"
-        ]
+            "tag": "input",
+            "cuantity": "number",
+            "time": "number",
+            "salary": "number"
+        }
     }
 }

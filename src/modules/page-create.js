@@ -7,34 +7,31 @@ export class pageCreate extends LitElement {
         super.connectedCallback();
         const pageData=document.querySelector('principal-pages')
         this.type=pageData.type
-        this.department=pageData.option
+        this.crudOption=pageData.option
         this.Submit={}
+
     }
     render(){
-
-        console.log(data[this.type][this.department])
         return html`
 
-        <div>" ${this.department} a new ${this.type}"</div>
+        <div>${this.crudOption.toUpperCase()} ${this.type.toUpperCase()}</div>
         <form class="form-container">
-        ${Object.entries(data[this.type][this.department]).map(([key, item]) =>{
+        ${Object.entries(data[this.type][this.crudOption]).map(([key, item]) =>{
             
             if (Array.isArray(item)){
                 return html`
-                <label for="options"${key}</label>
-                <select id="options">
+                <label for="options">${key}</label>
+                <select id="options" name="${key}">
                 ${item.map(element => {
                     return html`
-
                         <option>${element}</option>
-                    
             `})}
                     </select>
             `;
 
             } else {
             return html`
-            <div class="form__group field">
+            <div class="${key}">
                 <label for="${key}" class="form__label">${item==="date"? key : ""}</label>
                 <input type=${item} class="form__field" placeholder="${key}" required="" id="${key}" name="${key}">
             </div>
@@ -60,9 +57,7 @@ export class pageCreate extends LitElement {
             const container=this.shadowRoot.querySelector('.form-container')
             const data = Object.fromEntries(new FormData(container).entries());
             const inputData = JSON.parse(JSON.stringify(data));
-            console.log(inputData)
             if(this.type=="Inventory"){
-
                 const {tag,name,description,category,suplier,price,unit,stock,buydate,duedate,ubication,notes} = inputData;
                 this.Submit={
                     tag:tag,
