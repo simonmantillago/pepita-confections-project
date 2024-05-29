@@ -1,7 +1,6 @@
 {
     "page-1":{
         "title":"PEPITA",
-        "num":1,
         "options":[
             "Inventory",
             "Products",
@@ -12,7 +11,6 @@
     
     "page-2":{
         "title":"Inventory",
-        "num":2,
         "options":[
             "create",
             "Modify",
@@ -25,7 +23,6 @@
     
     "page-3":{
         "title":"Products",
-        "num":3,
         "options":[
             "create",
             "Modify",
@@ -37,7 +34,6 @@
     
     "page-4":{
         "title":"Reports",
-        "num":4,
         "options":[
             "create",
             "Modify",

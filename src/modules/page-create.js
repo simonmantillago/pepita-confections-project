@@ -8,6 +8,7 @@ export class pageCreate extends LitElement {
         const pageData=document.querySelector('principal-pages')
         this.type=pageData.type
         this.department=pageData.option
+        this.Submit={}
     }
     render(){
 
@@ -15,16 +16,18 @@ export class pageCreate extends LitElement {
         return html`
 
         <div>" ${this.department} a new ${this.type}"</div>
-        <div class="container">
+        <form class="form-container">
         ${Object.entries(data[this.type][this.department]).map(([key, item]) =>{
             
             if (Array.isArray(item)){
                 return html`
-                <label for="options">${key}</label>
+                <label for="options"${key}</label>
                 <select id="options">
                 ${item.map(element => {
                     return html`
+
                         <option>${element}</option>
+                    
             `})}
                     </select>
             `;
@@ -32,14 +35,15 @@ export class pageCreate extends LitElement {
             } else {
             return html`
             <div class="form__group field">
-                <input type="input" class="form__field" placeholder="${item}" required="" id="${key}" name="${key}">
-                <label for="${key}" class="form__label"></label>
+                <label for="${key}" class="form__label">${item==="date"? key : ""}</label>
+                <input type=${item} class="form__field" placeholder="${key}" required="" id="${key}" name="${key}">
             </div>
             `}
         }
         )}
-        </div>
+        </form>
         <a class="back-button">Go back</a>
+        <a class="submmit">submmit</a>
         `
     }
     firstUpdated(){
@@ -50,6 +54,60 @@ export class pageCreate extends LitElement {
             this.parentNode.insertAdjacentHTML('beforeend',principalPage);
             this.parentNode.removeChild(this);
         })
+        
+        const submmitButton=this.shadowRoot.querySelector('.submmit')
+        submmitButton.addEventListener('click',async (event)=>{
+            const container=this.shadowRoot.querySelector('.form-container')
+            const data = Object.fromEntries(new FormData(container).entries());
+            const inputData = JSON.parse(JSON.stringify(data));
+            console.log(inputData)
+            if(this.type=="Inventory"){
+
+                const {tag,name,description,category,suplier,price,unit,stock,buydate,duedate,ubication,notes} = inputData;
+                this.Submit={
+                    tag:tag,
+                    name:name,
+                    description:description,
+                    category:category,
+                    suplier:suplier,
+                    price:price,
+                    unit:unit,
+                    stock:stock,
+                    adate:buydate,
+                    ddate:duedate,
+                    ubication:ubication,
+                    notes:notes
+                }
+            }else if(this.type==="Products"){
+                const {tag,cuantity,time,salary}=inputData
+                this.Submit={
+                    tag:tag,
+                    cuantity:cuantity,
+                    time:time,
+                    salary:salary
+                }
+            }
+            try {
+                const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.Submit)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al enviar POST al MockAPI');
+                }
+
+                const responseData = await response.json();
+                console.log('Respuesta de la API:', responseData);
+            } catch (error) {
+                console.error('Error al enviar POST a la API:', error);
+            }
+            
+        })
+
     }
 
 }
