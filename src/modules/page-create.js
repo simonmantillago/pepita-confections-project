@@ -9,7 +9,8 @@ export class pageCreate extends LitElement {
         this.type=pageData.type
         this.crudOption=pageData.option
         this.Submit={}
-        this.materials={}
+        this.materials=[]
+        this.isReady=false
 
     }
     render(){
@@ -28,6 +29,7 @@ export class pageCreate extends LitElement {
                     return html`
                         <option>${element}</option>
             `})}
+
                     </select>
                     </div>
             `;
@@ -38,17 +40,18 @@ export class pageCreate extends LitElement {
                 <label for="${key}" class="form__label">${(item[0]==="date" || item[0]==="color")? item[1] : ""}</label>
                 <input type=${item[0]} class="form__field" placeholder="${item[1]}" required="" id="${key}" name="${key}">
             </div>
-            `}})
-        }
+            `}})}
+            <div>${this.type === "Products" ? this.newhtml() : ''}</div>
             
         </form>
         <a class="back-button">Go back</a>
         <a class="submmit">submmit</a>
-        `
-    }
+        `}
+
     firstUpdated(){
-        this.selectMaterial()
-        console.log(this.materials)
+        if (this.type === "Products") {
+            this.findData();
+            }
         
         const backbutton=this.shadowRoot.querySelector('.back-button')
         backbutton.addEventListener('click',()=>{
@@ -114,14 +117,78 @@ export class pageCreate extends LitElement {
 
             
         })
+
+        
     }
-    async selectMaterial(){
-        const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`);
-            const data = await response.json();
-            this.materials = data;
-            console.log(this.materials)
-    }
+    async findData() {
+        try {
+            const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`);
+            this.materials = await response.json();
+            this.isReady = true
+          this.requestUpdate(); // Trigger a re-render to display materials
+        } catch (error) {
+            console.error('Error fetching materials:', error);
+        }
+
+        }
+
+        renderMaterials(materialType) {
+            if (this.isReady) {
+                return this.materials.map(material => {
+                    if (material['category'] === materialType) {
+                        return html`<option>${material['tag']}</option>`;
+                    }
+                });
+            }
+            return html``;
+        }
+        // renderUnit(materialType) {
+        //     if (this.isReady) {
+        //         return this.materials.map(material => {
+        //             if (material['category'] === materialType) {
+        //                 return html`
+        //                 <label for="${material}" class="form__label"> ${material['unit']}</label>
+        //                 <input type=number class="form__field" placeholder="${material}" required="" id="${key}" name="${material}">`;
+        //             }
+        //         });
+        //     }
+        //     return html``;
+        // }
     
+        newhtml() {
+            return html`
+                <div>
+                <label for="tela">tela</label>
+                    <select id="tela" name=tela>
+                        <option>N/A</option>
+                        ${this.renderMaterials('tela')}
+                    </select>
+                <div> <label for="tela" class="form__label">Cuantity of tela</label>
+                        <input type=number class="form__field" placeholder="tela" required="" id="tela" name="tela">[m]</div>
+                </div>
+                <div>
+                <label for="hilo">hilo</label>
+                    <select id="hilo" name=hilo>
+                        <option>N/A</option>
+                        ${this.renderMaterials('hilo')}
+                    </select>
+                    <div> <label for="tela" class="form__label">Cuantity of tela</label>
+                        <input type=number class="form__field" placeholder="tela" required="" id="tela" name="tela">[m]</div>
+                </div>
+                </div>
+                <div>
+                <label for="botones">botones</label>
+                    <select id="botones" name=botones>
+                        <option>N/A</option>
+                        ${this.renderMaterials('botones')}
+                    </select>
+                    <div> <label for="tela" class="form__label">Cuantity of tela</label>
+                        <input type=number class="form__field" placeholder="tela" required="" id="tela" name="tela">[m]</div>
+                </div>
+                </div>
+
+            `;
+        }
 }
 
 
