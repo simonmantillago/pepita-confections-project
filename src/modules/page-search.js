@@ -81,7 +81,7 @@ export class pageSearch extends LitElement{
                     <h3>---- Results ----</h3>
                     <ul>
 
-                    ${this.searchItem !== '' ? (this.data).filter(item => item.tag === this.searchItem).map(item => html`
+                    ${this.searchItem !== '' ? (this.data).filter(item => item.tag.includes(this.searchItem)).map(item => html`
                     <li>
                         <h4>${item.tag}</h4> - ${item.name} - ${item.stock}
                         <button @click="${() => this.setEditItem(item)}">Editar</button>
