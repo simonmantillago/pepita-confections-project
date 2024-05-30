@@ -1,0 +1,31 @@
+{
+    "Inventory": {
+        "create": {
+            "tag": ["input","Tag"],
+            "name": ["input","Name"],
+            "description": ["input","Description"],
+            "category":["Category", ["tela","hilo","botones"]],
+            "suplier": ["input","Suplier"],
+            "price": ["number","Price"],
+            "unit": ["Unit of medition",["m","cm","roll","unity","box"]],
+            "stock": ["number","Stock"],
+            "buydate": ["date","Buy date"],
+            "duedate": ["date","Due date"],
+            "ubication": ["input","Ubication"],
+            "notes": ["input","Notes"],
+            "color":["color","color"]
+        }
+    },
+
+    "Products": {
+        "create": {
+            "tag": ["input","Tag"],
+            "unit":["unit", ["m","cm","roll","unity","box"]],
+            "cuantity": ["number","Cuantity"],
+            "time": ["number","How much time take"],
+            "salary": ["number","Salary"],
+            "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]],
+            "color":["color","Color"]
+        }
+    }
+}
