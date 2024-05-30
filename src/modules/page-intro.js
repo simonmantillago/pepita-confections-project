@@ -63,13 +63,12 @@ export class pages extends LitElement {
     otherOPtions(option,type){
             this.option=option
             this.type=type
-            console.log(option)
-            console.log(type)
-            const createPrice=`<page-${option}></page-${option}>`;
-            this.parentNode.insertAdjacentHTML('beforeend',createPrice);
+            const generateComponent=`<page-${option}></page-${option}>`;
+            this.parentNode.insertAdjacentHTML('beforeend',generateComponent);
             this.parentNode.removeChild(this);
         
     }
     
 }
 customElements.define("principal-pages", pages);
+
