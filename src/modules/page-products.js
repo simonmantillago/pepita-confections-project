@@ -16,14 +16,26 @@ export class pageProducts extends LitElement {
         const response = await fetch('https://66560fd13c1d3b60293c1866.mockapi.io/Products');
         this.products = await response.json();
     }
+    static styles = css` 
+    img{
+        width:100%;   
+    }
+    .card{
+        display:inline-block;
+        width:250px;
+    }
+    `
     
     render() {
         return html`
-            <ul>
-            ${Object.entries(this.products).map(([key, item]) => html`
-            // <div>"${key} es igual a ${item.price} ${item.id}"</div>
-            `)}
-            </ul>
+        <div class="cards-container "  >
+        ${Object.entries(this.products).map(([key, item]) => html`    
+            <a class="card" id="${key}" >
+                <img style="background-color:${item['color']}" src=${item['image']} alt="picture">
+                <p style="color:white;">${item['tag']}</p>
+            </a>
+        `)}
+        </div>
         `;
         }
     }

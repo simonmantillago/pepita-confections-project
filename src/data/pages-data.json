@@ -12,17 +12,20 @@
             "buydate": ["date","Buy date"],
             "duedate": ["date","Due date"],
             "ubication": ["input","Ubication"],
-            "notes": ["input","Notes"]
+            "notes": ["input","Notes"],
+            "color":["color","color"]
         }
     },
 
     "Products": {
         "create": {
             "tag": ["input","Tag"],
+            "unit":["unit", ["m","cm","roll","unity","box"]],
             "cuantity": ["number","Cuantity"],
             "time": ["number","How much time take"],
             "salary": ["number","Salary"],
-            "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]]
+            "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]],
+            "color":["input","material"]
         }
     }
 }

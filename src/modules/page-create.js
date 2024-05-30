@@ -20,6 +20,7 @@ export class pageCreate extends LitElement {
             
             if (Array.isArray(item[1])){
                 return html`
+                <div>
                 <label for="options">${item[0]}</label>
                 <select id="options" name="${key}">
                 ${item[1].map(element => {
@@ -27,12 +28,13 @@ export class pageCreate extends LitElement {
                         <option>${element}</option>
             `})}
                     </select>
+                    </div>
             `;
 
             } else {
             return html`
             <div class="${key}">
-                <label for="${key}" class="form__label">${item[0]==="date"? item[1] : ""}</label>
+                <label for="${key}" class="form__label">${(item[0]==="date" || item[0]==="color")? item[1] : ""}</label>
                 <input type=${item[0]} class="form__field" placeholder="${item[1]}" required="" id="${key}" name="${key}">
             </div>
             `}
@@ -58,7 +60,7 @@ export class pageCreate extends LitElement {
             const data = Object.fromEntries(new FormData(container).entries());
             const inputData = JSON.parse(JSON.stringify(data));
             if(this.type=="Inventory"){
-                const {tag,name,description,category,suplier,price,unit,stock,buydate,duedate,ubication,notes} = inputData;
+                const {tag,name,description,category,suplier,price,unit,stock,buydate,duedate,ubication,notes,color} = inputData;
                 this.Submit={
                     tag:tag,
                     name:name,
@@ -71,15 +73,20 @@ export class pageCreate extends LitElement {
                     adate:buydate,
                     ddate:duedate,
                     ubication:ubication,
-                    notes:notes
+                    notes:notes,
+                    color:color
                 }
             }else if(this.type==="Products"){
-                const {tag,cuantity,time,salary}=inputData
+                const {tag,cuantity,time,salary,image,color}=inputData
+                const imgUrl=`../../public/imgs/${image}.png`
                 this.Submit={
                     tag:tag,
                     cuantity:cuantity,
                     time:time,
-                    salary:salary
+                    salary:salary,
+                    image:imgUrl,
+                    color:color
+
                 }
             }
             try {
@@ -100,6 +107,8 @@ export class pageCreate extends LitElement {
             } catch (error) {
                 console.error('Error al enviar POST a la API:', error);
             }
+            
+
             
         })
 
