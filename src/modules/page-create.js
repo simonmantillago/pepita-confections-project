@@ -18,11 +18,11 @@ export class pageCreate extends LitElement {
         <form class="form-container">
         ${Object.entries(data[this.type][this.crudOption]).map(([key, item]) =>{
             
-            if (Array.isArray(item)){
+            if (Array.isArray(item[1])){
                 return html`
-                <label for="options">${key}</label>
+                <label for="options">${item[0]}</label>
                 <select id="options" name="${key}">
-                ${item.map(element => {
+                ${item[1].map(element => {
                     return html`
                         <option>${element}</option>
             `})}
@@ -32,8 +32,8 @@ export class pageCreate extends LitElement {
             } else {
             return html`
             <div class="${key}">
-                <label for="${key}" class="form__label">${item==="date"? key : ""}</label>
-                <input type=${item} class="form__field" placeholder="${key}" required="" id="${key}" name="${key}">
+                <label for="${key}" class="form__label">${item[0]==="date"? item[1] : ""}</label>
+                <input type=${item[0]} class="form__field" placeholder="${item[1]}" required="" id="${key}" name="${key}">
             </div>
             `}
         }

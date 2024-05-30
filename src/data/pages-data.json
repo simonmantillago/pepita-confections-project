@@ -1,37 +1,28 @@
 {
     "Inventory": {
         "create": {
-            "tag": "input",
-            "name": "input",
-            "description": "input",
-            "category": [
-                "tela",
-                "hilo",
-                "botones"
-            ],
-            "suplier": "input",
-            "price": "number",
-            "unit": [
-                "m",
-                "cm",
-                "roll",
-                "unity",
-                "box"
-            ],
-            "stock": "number",
-            "buydate": "date",
-            "duedate": "date",
-            "ubication": "input",
-            "notes": "input"
+            "tag": ["input","Tag"],
+            "name": ["input","Name"],
+            "description": ["input","Description"],
+            "category":["Category", ["tela","hilo","botones"]],
+            "suplier": ["input","Suplier"],
+            "price": ["number","Price"],
+            "unit": ["Unit of medition",["m","cm","roll","unity","box"]],
+            "stock": ["number","Stock"],
+            "buydate": ["date","Buy date"],
+            "duedate": ["date","Due date"],
+            "ubication": ["input","Ubication"],
+            "notes": ["input","Notes"]
         }
     },
 
     "Products": {
         "create": {
-            "tag": "input",
-            "cuantity": "number",
-            "time": "number",
-            "salary": "number"
+            "tag": ["input","Tag"],
+            "cuantity": ["number","Cuantity"],
+            "time": ["number","How much time take"],
+            "salary": ["number","Salary"],
+            "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]]
         }
     }
 }

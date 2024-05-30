@@ -31,7 +31,8 @@
     "page-4":{
         "title":"Reports",
         "options":[
-            "others"
+            "new",
+            "search"
         ]
         
     }

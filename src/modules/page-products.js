@@ -4,23 +4,23 @@ export class pageProducts extends LitElement {
 
     constructor(){
         super()
-        this.books={}
+        this.products={}
     }
     static properties = {
-        books: { type: Object },
+        products: { type: Object },
     }
     firstUpdated(){
-        this.fetchBooks()
+        this.readProducts()
     }
-    async fetchBooks() {
-        const response = await fetch('https://66560fd13c1d3b60293c1866.mockapi.io/products');
-        this.books = await response.json();
+    async readProducts() {
+        const response = await fetch('https://66560fd13c1d3b60293c1866.mockapi.io/Products');
+        this.products = await response.json();
     }
     
     render() {
         return html`
             <ul>
-            ${Object.entries(this.books).map(([key, item]) => html`
+            ${Object.entries(this.products).map(([key, item]) => html`
             // <div>"${key} es igual a ${item.price} ${item.id}"</div>
             `)}
             </ul>
@@ -28,4 +28,4 @@ export class pageProducts extends LitElement {
         }
     }
 
-customElements.define("page-products", pageProducts);
+customElements.define("page-new", pageProducts);
