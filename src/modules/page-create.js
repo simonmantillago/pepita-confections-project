@@ -9,6 +9,7 @@ export class pageCreate extends LitElement {
         this.type=pageData.type
         this.crudOption=pageData.option
         this.Submit={}
+        this.materials={}
 
     }
     render(){
@@ -37,15 +38,17 @@ export class pageCreate extends LitElement {
                 <label for="${key}" class="form__label">${(item[0]==="date" || item[0]==="color")? item[1] : ""}</label>
                 <input type=${item[0]} class="form__field" placeholder="${item[1]}" required="" id="${key}" name="${key}">
             </div>
-            `}
+            `}})
         }
-        )}
+            
         </form>
         <a class="back-button">Go back</a>
         <a class="submmit">submmit</a>
         `
     }
     firstUpdated(){
+        this.selectMaterial()
+        console.log(this.materials)
         
         const backbutton=this.shadowRoot.querySelector('.back-button')
         backbutton.addEventListener('click',()=>{
@@ -111,9 +114,14 @@ export class pageCreate extends LitElement {
 
             
         })
-
     }
-
+    async selectMaterial(){
+        const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`);
+            const data = await response.json();
+            this.materials = data;
+            console.log(this.materials)
+    }
+    
 }
 
 

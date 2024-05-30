@@ -25,7 +25,7 @@
             "time": ["number","How much time take"],
             "salary": ["number","Salary"],
             "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]],
-            "color":["input","material"]
+            "color":["color","Color"]
         }
     }
 }
