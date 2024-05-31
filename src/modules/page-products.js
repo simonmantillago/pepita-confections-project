@@ -100,7 +100,8 @@ export class pageProducts extends LitElement {
         `)}
         </div>
         `;
-        }
+   
+
         exist(color, material){
             return html`
             <img style="background-color:${color}" src="../../imgs/${material}.png">`
@@ -109,9 +110,6 @@ export class pageProducts extends LitElement {
             return html`
             <img src="../../imgs/no${material}.png">`
         }
-
-    
-        
     }
 
 customElements.define("page-new", pageProducts);
