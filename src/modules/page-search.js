@@ -41,6 +41,7 @@ export class pageSearch extends LitElement {
         delete updatedItem.adate;
         delete updatedItem.ddate;
         delete updatedItem.image;
+        delete updatedItem.category;
 
         try {
             const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}/${this.editItem.id}`, {
@@ -80,6 +81,14 @@ export class pageSearch extends LitElement {
             this.requestUpdate();  // Solicita una actualización del componente
         }
     }
+    BackButton(){
+        const backbutton=this.shadowRoot.querySelector('.back-button')
+        backbutton.addEventListener('click',()=>{
+            const principalPage=`<principal-pages></principal-pages>`;
+            this.parentNode.insertAdjacentHTML('beforeend',principalPage);
+            this.parentNode.removeChild(this);
+        })
+    }
 
     setEditItem(item) {
         this.editItem = { ...item };  // Configura el elemento a editar
@@ -88,6 +97,7 @@ export class pageSearch extends LitElement {
     render() {
         return html`
         <div>
+            
             <div class="search-bar">
                 <label for="searcher"><h2>Type the ${this.type}'s id you're looking for!</h2></label>
                 <input type="text" id="searcher" @input="${e => this.handleInputChange(e, 'search')}">  
@@ -136,7 +146,6 @@ export class pageSearch extends LitElement {
         return html`
             <label>Name: <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Description: <input type="text" name="description" .value="${this.editItem.description}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Category: <input type="text" name="category" .value="${this.editItem.category}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Suplier: <input type="text" name="suplier" .value="${this.editItem.suplier}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Price: <input type="text" name="price" .value="${this.editItem.price}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Unit: <input type="text" name="unit" .value="${this.editItem.unit}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
@@ -152,7 +161,7 @@ export class pageSearch extends LitElement {
             <label>Cuantity: <input type="text" name="cuantity" .value="${this.editItem.cuantity}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Time: <input type="text" name="time" .value="${this.editItem.time}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Salary: <input type="text" name="salary" .value="${this.editItem.salary}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Color: <input type="text" name="color" .value="${this.editItem.color}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
+            <label>Color: <input type="color" name="color" .value="${this.editItem.color}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
         `;
     }
 }

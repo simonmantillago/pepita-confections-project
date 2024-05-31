@@ -13,8 +13,6 @@
         "title":"Inventory",
         "options":[
             "create",
-            "Modify",
-            "Delete",
             "search"
         ]
         
