@@ -180,6 +180,10 @@ export class pageCreate extends LitElement {
                 cuantityInput.disabled=true
                 materialColor.disabled=true
                 materialUnit.disabled=true
+                materialUnit.value= ""
+                materialColor.value =""
+                materialColor.style.backgroundColor="transparent"
+                
             }else{
                 cuantityInput.disabled=false
                 materialColor.disabled=false

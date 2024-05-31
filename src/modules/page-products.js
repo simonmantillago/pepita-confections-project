@@ -11,6 +11,14 @@ export class pageProducts extends LitElement {
     }
     firstUpdated(){
         this.readProducts()
+        const cardContainer=this.shadowRoot.querySelector('.cards-container')
+        cardContainer.addEventListener('click',(event=>{
+            const product=event.target.closest('.card')
+            const productSelected=this.products[product.id]
+            console.log(productSelected)}))
+            this.productSelectedData={
+                
+            }
     }
     async readProducts() {
         const response = await fetch('https://66560fd13c1d3b60293c1866.mockapi.io/Products');
@@ -29,9 +37,10 @@ export class pageProducts extends LitElement {
     render() {
         return html`
         <div class="cards-container "  >
-        ${Object.entries(this.products).map(([key, item]) => html`    
+        ${Object.entries(this.products).map(([key, item]) => html`
+                
             <a class="card" id="${key}" >
-            <div style="color:white;">${item['name']}</div>
+            <div style="color:white;">${item['tag']}</div>
                 <div class="big-img">
                 <img style="background-color:${item['materialInfo']['telaColor']}" src=${item['image']} alt="picture">
                 <div class="bot-img">
@@ -44,7 +53,6 @@ export class pageProducts extends LitElement {
         </div>
         `;
         }
-
         exist(color, material){
             return html`
             <img style="background-color:${color}" src="../../imgs/${material}.png">`
@@ -53,6 +61,9 @@ export class pageProducts extends LitElement {
             return html`
             <img src="../../imgs/no${material}.png">`
         }
+
+    
+        
     }
 
 customElements.define("page-new", pageProducts);
