@@ -1,4 +1,4 @@
-import { LitElement, css, html } from 'lit';  // Importa LitElement, css y html desde la librería 'lit'
+import { LitElement, html } from 'lit';
 
 export class pageSearch extends LitElement {
     static get properties() {
@@ -34,14 +34,24 @@ export class pageSearch extends LitElement {
     async updateItem() {
         if (!this.editItem) return;  // Si no hay un elemento en edición, retorna
 
-        const updatedItem = { ...this.editItem };  // Crea una copia del elemento en edición
-        // Elimina los campos que no deben ser actualizados
-        delete updatedItem.id;
-        delete updatedItem.tag;
-        delete updatedItem.adate;
-        delete updatedItem.ddate;
-        delete updatedItem.image;
-        delete updatedItem.category;
+        let updatedItem = { ...this.editItem };  // Crea una copia del elemento en edición
+
+        if (this.type === 'Inventory') {
+            // Elimina los campos que no deben ser actualizados en Inventory
+            delete updatedItem.id;
+            delete updatedItem.tag;
+            delete updatedItem.adate;
+            delete updatedItem.ddate;
+            delete updatedItem.image;
+            delete updatedItem.category;
+            delete updatedItem.unit;
+        } else {
+            // Mantén solo los campos permitidos para Product
+            updatedItem = {
+                name: updatedItem.name,
+                time: updatedItem.time,
+            };
+        }
 
         try {
             const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}/${this.editItem.id}`, {
@@ -75,29 +85,37 @@ export class pageSearch extends LitElement {
     handleInputChange(e, type) {
         const { name, value } = e.target;  // Obtiene el nombre y el valor del input
         if (type === 'edit') {
-            this.editItem = { ...this.editItem, [name]: value };  // Actualiza el elemento en edición
+            if (name.includes('materialInfo.')) {
+                const key = name.split('.')[1];
+                this.editItem.materialInfo[key] = value;
+            } else {
+                this.editItem = { ...this.editItem, [name]: value };  // Actualiza el elemento en edición
+            }
         } else if (type === 'search') {
             this.searchItem = value;  // Actualiza la cadena de búsqueda
             this.requestUpdate();  // Solicita una actualización del componente
         }
     }
-    BackButton(){
-        const backbutton=this.shadowRoot.querySelector('.back-button')
-        backbutton.addEventListener('click',()=>{
-            const principalPage=`<principal-pages></principal-pages>`;
-            this.parentNode.insertAdjacentHTML('beforeend',principalPage);
-            this.parentNode.removeChild(this);
-        })
-    }
+
 
     setEditItem(item) {
         this.editItem = { ...item };  // Configura el elemento a editar
     }
 
+    firstUpdated(){
+        const backbutton = this.shadowRoot.querySelector(".back-button");
+        backbutton.addEventListener("click", () => {
+            const principalPage = `<principal-pages></principal-pages>`;
+            this.parentNode.insertAdjacentHTML("beforeend", principalPage);
+            this.parentNode.removeChild(this);
+        });
+    }
+   
+
     render() {
         return html`
         <div>
-            
+        <a class="back-button">← Go back</a>
             <div class="search-bar">
                 <label for="searcher"><h2>Type the ${this.type}'s id you're looking for!</h2></label>
                 <input type="text" id="searcher" @input="${e => this.handleInputChange(e, 'search')}">  
@@ -129,7 +147,7 @@ export class pageSearch extends LitElement {
         if (this.type === 'Inventory') {
             return html`Name: ${item.name} - Stock: ${item.stock}`;
         } else {
-            return html`Cuantity: ${item.cuantity} - Time: ${item.time}`;
+            return html`Cuantity: ${item.materialInfo.telaCuantity} - Time: ${item.time}`;
         }
     }
 
@@ -148,7 +166,6 @@ export class pageSearch extends LitElement {
             <label>Description: <input type="text" name="description" .value="${this.editItem.description}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Suplier: <input type="text" name="suplier" .value="${this.editItem.suplier}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Price: <input type="text" name="price" .value="${this.editItem.price}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Unit: <input type="text" name="unit" .value="${this.editItem.unit}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Stock: <input type="text" name="stock" .value="${this.editItem.stock}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Ubication: <input type="text" name="ubication" .value="${this.editItem.ubication}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Notes: <input type="text" name="notes" .value="${this.editItem.notes}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
@@ -158,12 +175,11 @@ export class pageSearch extends LitElement {
 
     renderProductEditForm() {
         return html`
-            <label>Cuantity: <input type="text" name="cuantity" .value="${this.editItem.cuantity}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
+            <label>Name: <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Time: <input type="text" name="time" .value="${this.editItem.time}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Salary: <input type="text" name="salary" .value="${this.editItem.salary}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Color: <input type="color" name="color" .value="${this.editItem.color}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
+            
         `;
     }
 }
 
-customElements.define("page-search", pageSearch);  // Define el nuevo componente 'page-search'
+customElements.define('page-search', pageSearch);
