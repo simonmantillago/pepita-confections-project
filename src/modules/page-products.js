@@ -40,7 +40,7 @@ export class pageProducts extends LitElement {
         ${Object.entries(this.products).map(([key, item]) => html`
                 
             <a class="card" id="${key}" >
-            <div style="color:white;">${item['tag']}</div>
+            <div>${item['name']}</div>
                 <div class="big-img">
                 <img style="background-color:${item['materialInfo']['telaColor']}" src=${item['image']} alt="picture">
                 <div class="bot-img">
