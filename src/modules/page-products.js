@@ -31,7 +31,7 @@ export class pageProducts extends LitElement {
         <div class="cards-container "  >
         ${Object.entries(this.products).map(([key, item]) => html`    
             <a class="card" id="${key}" >
-                <img style="background-color:${item['color']}" src=${item['image']} alt="picture">
+                <img style="background-color:${item['materialInfo']['telaColor']}" src=${item['image']} alt="picture">
                 <p style="color:white;">${item['tag']}</p>
             </a>
         `)}

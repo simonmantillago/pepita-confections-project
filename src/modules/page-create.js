@@ -83,15 +83,14 @@ export class pageCreate extends LitElement {
                     color:color
                 }
             }else if(this.type==="Products"){
-                const {tag,cuantity,time,salary,image,color}=inputData
+                const {tag,time,image,...materials}=inputData
                 const imgUrl=`../../public/imgs/${image}.png`
                 this.Submit={
                     tag:tag,
-                    cuantity:cuantity,
                     time:time,
-                    salary:salary,
                     image:imgUrl,
-                    color:color
+                    materialInfo:materials
+        
 
                 }
             }
@@ -132,62 +131,61 @@ export class pageCreate extends LitElement {
 
         }
 
+        newhtml() {
+            return html`
+            ${(data['Inventory']['create']['category'][1]).map(element => {
+                return html`${this.createMaterialsHtml(element)}`
+            })
+        }
+            
+            `;
+        }
+        
+        createMaterialsHtml(material){
+            return html`
+                <div>
+                <label for=${material}>${material}</label>
+                <select id=${material} name=${material} @change="${(event) => this.materialSelected(event, material)}">
+                <option value="N/A">N/A</option>
+                ${this.renderMaterials(material)}
+                </select>
+                <input type=number class="form__field ${material}Cuantity" placeholder="" required="" id="${material}Cuantity" name="${material}Cuantity" disabled>
+                <input id="${material}Unit" name="${material}Unit" class="${material}Unit" disabled>
+                <input id="${material}Color" name="${material}Color" class="${material}color" disabled>
+                `
+                    }
+
         renderMaterials(materialType) {
             if (this.isReady) {
                 return this.materials.map(material => {
                     if (material['category'] === materialType) {
-                        return html`<option>${material['tag']}</option>`;
+                        return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
                     }
                 });
             }
             return html``;
         }
-        // renderUnit(materialType) {
-        //     if (this.isReady) {
-        //         return this.materials.map(material => {
-        //             if (material['category'] === materialType) {
-        //                 return html`
-        //                 <label for="${material}" class="form__label"> ${material['unit']}</label>
-        //                 <input type=number class="form__field" placeholder="${material}" required="" id="${key}" name="${material}">`;
-        //             }
-        //         });
-        //     }
-        //     return html``;
-        // }
-    
-        newhtml() {
-            return html`
-                <div>
-                <label for="tela">tela</label>
-                    <select id="tela" name=tela>
-                        <option>N/A</option>
-                        ${this.renderMaterials('tela')}
-                    </select>
-                <div> <label for="tela" class="form__label">Cuantity of tela</label>
-                        <input type=number class="form__field" placeholder="tela" required="" id="tela" name="tela">[m]</div>
-                </div>
-                <div>
-                <label for="hilo">hilo</label>
-                    <select id="hilo" name=hilo>
-                        <option>N/A</option>
-                        ${this.renderMaterials('hilo')}
-                    </select>
-                    <div> <label for="tela" class="form__label">Cuantity of tela</label>
-                        <input type=number class="form__field" placeholder="tela" required="" id="tela" name="tela">[m]</div>
-                </div>
-                </div>
-                <div>
-                <label for="botones">botones</label>
-                    <select id="botones" name=botones>
-                        <option>N/A</option>
-                        ${this.renderMaterials('botones')}
-                    </select>
-                    <div> <label for="tela" class="form__label">Cuantity of tela</label>
-                        <input type=number class="form__field" placeholder="tela" required="" id="tela" name="tela">[m]</div>
-                </div>
-                </div>
-
-            `;
+                            
+        materialSelected(event, material){
+            const selectedMaterial = event.target;
+            const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
+            const unit = selectedOption.getAttribute('unit');
+            const color = selectedOption.getAttribute('materialColor');
+            const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
+            const materialColor = this.shadowRoot.querySelector(`.${material}color`)
+            const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
+            if(selectedMaterial==="N/A"){
+                cuantityInput.disabled=true
+            }else{
+                cuantityInput.disabled=false
+                materialColor.disabled=false
+                materialUnit.disabled=false
+                materialUnit.readonly=true
+                materialColor.readonly=true
+                materialUnit.value= unit
+                materialColor.value =color
+                materialColor.style.color=(color)
+                materialColor.style.backgroundColor=(color)}
         }
 }
 
