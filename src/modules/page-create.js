@@ -83,9 +83,10 @@ export class pageCreate extends LitElement {
                     color:color
                 }
             }else if(this.type==="Products"){
-                const {tag,time,image,...materials}=inputData
+                const {tag,time,image,name,...materials}=inputData
                 const imgUrl=`../../public/imgs/${image}.png`
                 this.Submit={
+                    name:name,
                     tag:tag,
                     time:time,
                     image:imgUrl,
@@ -167,6 +168,7 @@ export class pageCreate extends LitElement {
         }
                             
         materialSelected(event, material){
+            const isNA = event.target.value
             const selectedMaterial = event.target;
             const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
             const unit = selectedOption.getAttribute('unit');
@@ -174,14 +176,16 @@ export class pageCreate extends LitElement {
             const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
             const materialColor = this.shadowRoot.querySelector(`.${material}color`)
             const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
-            if(selectedMaterial==="N/A"){
+            if(isNA==="N/A"){
                 cuantityInput.disabled=true
+                materialColor.disabled=true
+                materialUnit.disabled=true
             }else{
                 cuantityInput.disabled=false
                 materialColor.disabled=false
                 materialUnit.disabled=false
-                materialUnit.readonly=true
-                materialColor.readonly=true
+                materialUnit.setAttribute("readonly", "readonly")
+                materialColor.setAttribute("readonly", "readonly")
                 materialUnit.value= unit
                 materialColor.value =color
                 materialColor.style.color=(color)

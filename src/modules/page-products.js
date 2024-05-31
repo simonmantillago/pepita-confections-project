@@ -31,12 +31,27 @@ export class pageProducts extends LitElement {
         <div class="cards-container "  >
         ${Object.entries(this.products).map(([key, item]) => html`    
             <a class="card" id="${key}" >
+            <div style="color:white;">${item['name']}</div>
+                <div class="big-img">
                 <img style="background-color:${item['materialInfo']['telaColor']}" src=${item['image']} alt="picture">
-                <p style="color:white;">${item['tag']}</p>
+                <div class="bot-img">
+                ${item['materialInfo']['hiloColor'] ? this.exist(item['materialInfo']['hiloColor'],'hilo'):this.noExist('hilo')}
+                ${item['materialInfo']['botonesColor'] ? this.exist(item['materialInfo']['botonesColor'],'botones'):this.noExist('botones')}
+                </div>
+                </div>
             </a>
         `)}
         </div>
         `;
+        }
+
+        exist(color, material){
+            return html`
+            <img style="background-color:${color}" src="../../imgs/${material}.png">`
+        }
+        noExist(material){
+            return html`
+            <img src="../../imgs/no${material}.png">`
         }
     }
 

@@ -20,7 +20,8 @@
     "Products": {
         "create": {
             "tag": ["input","Tag"],
-            "time": ["number","How much time take"],
+            "name": ["input","Name of the product"],
+            "time": ["number","How many hours it take"],
             "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]]
         }
     }
