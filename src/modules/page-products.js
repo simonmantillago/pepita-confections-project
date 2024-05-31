@@ -42,8 +42,10 @@ export class pageProducts extends LitElement {
             </a>
         `)}
         </div>
-        `;
-        }
+
+        `;}
+   
+
 
         exist(color, material){
             return html`
