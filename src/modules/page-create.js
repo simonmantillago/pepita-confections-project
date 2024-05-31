@@ -221,48 +221,46 @@ export class pageCreate extends LitElement {
     `;
     }
 
-    renderMaterials(materialType) {
-        if (this.isReady) {
-            return this.materials.map((material) => {
-                if (material["category"] === materialType) {
-                    return html`<option
-            materialColor="${material["color"]}"
-            unit="${material["unit"]}"
-          >
-            ${material["tag"]}
-          </option>`;
-                }
-            });
+        renderMaterials(materialType) {
+            if (this.isReady) {
+                return this.materials.map(material => {
+                    if (material['category'] === materialType) {
+                        return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
+                    }
+                });
+            }
+            return html``;
         }
-        return html``;
+                            
+        materialSelected(event, material){
+            const isNA = event.target.value
+            const selectedMaterial = event.target;
+            const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
+            const unit = selectedOption.getAttribute('unit');
+            const color = selectedOption.getAttribute('materialColor');
+            const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
+            const materialColor = this.shadowRoot.querySelector(`.${material}color`)
+            const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
+            if(isNA==="N/A"){
+                cuantityInput.disabled=true
+                materialColor.disabled=true
+                materialUnit.disabled=true
+                materialUnit.value= ""
+                materialColor.value =""
+                materialColor.style.backgroundColor="transparent"
+                
+            }else{
+                cuantityInput.disabled=false
+                materialColor.disabled=false
+                materialUnit.disabled=false
+                materialUnit.setAttribute("readonly", "readonly")
+                materialColor.setAttribute("readonly", "readonly")
+                materialUnit.value= unit
+                materialColor.value =color
+                materialColor.style.color=(color)
+                materialColor.style.backgroundColor=(color)}
+        }
     }
 
-    materialSelected(event, material) {
-        const isNA = event.target.value;
-        const selectedMaterial = event.target;
-        const selectedOption =
-            selectedMaterial.options[selectedMaterial.selectedIndex];
-        const unit = selectedOption.getAttribute("unit");
-        const color = selectedOption.getAttribute("materialColor");
-        const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`);
-        const materialColor = this.shadowRoot.querySelector(`.${material}color`);
-        const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`);
-        if (isNA === "N/A") {
-            cuantityInput.disabled = true;
-            materialColor.disabled = true;
-            materialUnit.disabled = true;
-        } else {
-            cuantityInput.disabled = false;
-            materialColor.disabled = false;
-            materialUnit.disabled = false;
-            materialUnit.setAttribute("readonly", "readonly");
-            materialColor.setAttribute("readonly", "readonly");
-            materialUnit.value = unit;
-            materialColor.value = color;
-            materialColor.style.color = color;
-            materialColor.style.backgroundColor = color;
-        }
-    }
-}
 
 customElements.define("page-create", pageCreate);
