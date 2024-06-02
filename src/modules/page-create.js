@@ -131,7 +131,7 @@ export class pageCreate extends LitElement {
                 };
             } else if (this.type === "Products") {
                 const { tag, time, image, name, ...materials } = inputData;
-                const imgUrl = `../../public/imgs/${image}.png`;
+                const imgUrl = `/imgs/${image}.png`;
                 this.Submit = {
                     name: name,
                     tag: tag,
@@ -246,6 +246,7 @@ export class pageCreate extends LitElement {
                 materialColor.disabled=true
                 materialUnit.disabled=true
                 materialUnit.value= ""
+                cuantityInput.value= ""
                 materialColor.value =""
                 materialColor.style.backgroundColor="transparent"
                 
