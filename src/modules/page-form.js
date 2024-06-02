@@ -6,8 +6,9 @@ export class pageForm extends LitElement {
         const choiseData=document.querySelector('page-new')
         this.price=choiseData.price
         this.productSelected=choiseData.productSelected
+        this.productAvailability=choiseData.availability
+        console.log(this.productAvailability)
         console.log(this.price)
-        console.log(this.productSelected)
         this.total=0
     }
 
@@ -59,7 +60,9 @@ export class pageForm extends LitElement {
             <div class="container">
                 <form class="customerForm">
                     <div class="form__group field customerName">
-                        <label for="Salary" class="form__label">Salary</label>
+                        
+                    
+                    <label for="Salary" class="form__label">Salary</label>
                         <input type="input" class="form__field" placeholder="Salary per hour" required="" id="Salary" name="Salary">
                         <label for="productQuantity" class="form__label">how Many</label>
                         <input type="input" class="form__field" placeholder="How many products" required="" id="productQuantity" name="productQuantity">
@@ -136,6 +139,13 @@ export class pageForm extends LitElement {
             const indirectCostPerHour=indirectCostTotal/730
             this.total=(((parseFloat(Salary)+parseFloat(indirectCostPerHour))*(this.productSelected['time']))+this.price)*productQuantity
             console.log(this.total)
+
+            Object.entries(this.productAvailability).forEach(([item, value])=> {
+                if(value[1]<(value[2]*productQuantity)){
+                    console.log(`hace falta ${(value[2]*productQuantity)-value[1]} ${value[3]} de ${item} con el ID: ${value[0]}`)
+                }
+                
+            });
 
 
 

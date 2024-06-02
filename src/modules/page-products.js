@@ -9,6 +9,7 @@ export class pageProducts extends LitElement {
         this.inventory={}
         this.price=0
         this.productSelected={}
+        this.availability={}
 
     }
     static properties = {
@@ -49,20 +50,29 @@ export class pageProducts extends LitElement {
 
         }
     catchMaterials(element,SelectedMaterials){
-        let elementQuantity=0;
+        let elementQuantity=0
+        let productUnit=''
         let tagElement=""
         let priceElement=0;
         let total=0;
+        let productAvailability
+        
         Object.entries(SelectedMaterials).map(([key, item]) =>{
             if(key===`${element}Cuantity`){
                 elementQuantity=item
+                Object.entries(SelectedMaterials).map(([key, item]) =>{
+                    if(key===`${element}` && item!='N/A'){
+                        tagElement= item
+                        Object.entries(this.inventory).map(([keys, items]) =>{
+                            if((items['category']===element) && (items['tag']===tagElement)){
+                                priceElement= items['price']
+                                productAvailability=items['stock']
+                                productUnit=items['unit']
+                                this.availability[element]=[tagElement,parseInt(productAvailability),parseInt(elementQuantity),productUnit]        
+                            }})}
+                })
             }
-            if(key===`${element}` && item!='N/A'){
-                tagElement= item
-                Object.entries(this.inventory).map(([keys, items]) =>{
-                    if((items['category']===element) && (items['tag']===tagElement)){
-                        priceElement= items['price']
-                    }})}
+            
             total=(elementQuantity*priceElement)          
         })
         return total
