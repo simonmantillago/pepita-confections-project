@@ -1,4 +1,5 @@
 import { LitElement, css, html } from 'lit';
+import { billPopUp } from './bill-pop-up';
 
 export class pageForm extends LitElement {
     connectedCallback(){
@@ -217,12 +218,20 @@ export class pageForm extends LitElement {
                 employeesData:employeesData, // info empleados, salario, horas, nombre, paycheck
                 totalEmployees:employeesTotal, // total que hay que pagar a empleados
                 totalHours:hoursTotal, // total de horas
-                totalIndirect:indirectCostTotalPerHour, // total costos indirectos
+                totalIndirectHours:indirectCostTotalPerHour, // total costos indirectos
+                totalIndirectMonth:indirectCostTotal, // total costos indirectos
                 totalProducts: materialsPriceTotal,
                 totalPrice: this.total,// precio total de todo
                 notes:this.notes
             }
             //https://665ce299e88051d60404f656.mockapi.io/Reports
+
+            const billPopUp = `<bill-pop-up></bill-pop-up>`;
+            const createPage = document.querySelector('page-new')
+            this.parentNode.insertAdjacentHTML("beforeend", billPopUp);
+            this.parentNode.removeChild(createPage);
+            this.parentNode.removeChild(this);
+            
 
 
 
