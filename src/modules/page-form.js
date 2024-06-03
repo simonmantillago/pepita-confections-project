@@ -7,7 +7,7 @@ export class pageForm extends LitElement {
         this.materialsPrice=choiseData.price
         this.productSelected=choiseData.productSelected // me sirve para el time, tag y name
         this.productAvailability=choiseData.availability
-        console.log(this.productAvailability)
+        this.notes=[]
         this.total=0
     }
 
@@ -157,7 +157,7 @@ export class pageForm extends LitElement {
             const employeesData={}
             let indirectCostTotal=0
             let employeesTotal=0
-            let hoursTotal
+            let hoursTotal=0
 
             Object.keys(rest).forEach(key => {
                 
@@ -184,35 +184,44 @@ export class pageForm extends LitElement {
                 Object.entries(employe).forEach(([item, values])=>{
                 if (item==='paycheck'){
                     employeesTotal+=values
-                } else if (item ==='hours'){
-                    hoursTotal+=values
+                }
+                if (item ==='hours'){
+                    hoursTotal+=parseFloat(values)
                 }
             })
             })
 
-
             const indirectCostPerHour=indirectCostTotal/720
-            this.total=(parseFloat(indirectCostPerHour)*hoursTotal)+(this.materialsPrice*parseFloat(productQuantity))+parseFloat(employeesTotal)
+            const indirectCostTotalPerHour=parseFloat(indirectCostPerHour)*hoursTotal
+            this.total=(indirectCostTotalPerHour)+(this.materialsPrice*parseFloat(productQuantity))+parseFloat(employeesTotal)
+            let materialsPriceTotal=this.materialsPrice*productQuantity
             
             
             Object.entries(this.productAvailability).forEach(([item, value])=> {
-                if(value[1]<(value[2]*productQuantity)){
-                    console.log(`hace falta ${(parseFloat(value[2])*parseFloat(productQuantity)-value[1])} ${value[3]} de ${item} con el ID: ${value[0]}`)
-                }
+
                 
-            });
+                value.push((value[2]*productQuantity))
+                if(value[1]<(value[2]*productQuantity)){
 
+                    this.notes.push(`hace falta ${(parseFloat(value[2])*parseFloat(productQuantity)-value[1])} ${value[3]} de ${item} con el ID: ${value[0]}`)
+                }
+                console.log(this.notes)
+            })
+            
+            ;
+            console.log(this.productAvailability)
             const report={
-                total:this.total,
-                product:this.productAvailability,
-                totalMaterial:this.materialsPrice,
-                employes:[Salary]
-
-
-
-
+                product:this.productAvailability,//  info de el producto, materiales y coostos por materiial
+                indirectCost:indirectCostData, // info costos indirecctos, nombre y precio por mes
+                employeesData:employeesData, // info empleados, salario, horas, nombre, paycheck
+                totalEmployees:employeesTotal, // total que hay que pagar a empleados
+                totalHours:hoursTotal, // total de horas
+                totalIndirect:indirectCostTotalPerHour, // total costos indirectos
+                totalProducts: materialsPriceTotal,
+                totalPrice: this.total,// precio total de todo
+                notes:this.notes
             }
-
+            //https://665ce299e88051d60404f656.mockapi.io/Reports
 
         })
 

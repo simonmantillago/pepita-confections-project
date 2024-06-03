@@ -73,8 +73,8 @@ export class pageProducts extends LitElement {
                 })
             }
             
-            total=(elementQuantity*priceElement)          
-        })
+            total=(elementQuantity*priceElement)       
+        })  
         return total
     }
 
