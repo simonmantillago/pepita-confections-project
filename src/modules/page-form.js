@@ -217,7 +217,8 @@ export class pageForm extends LitElement {
                 employeesData:employeesData, // info empleados, salario, horas, nombre, paycheck
                 totalEmployees:employeesTotal, // total que hay que pagar a empleados
                 totalHours:hoursTotal, // total de horas
-                totalIndirect:indirectCostTotalPerHour, // total costos indirectos
+                totalIndirectHours:indirectCostTotalPerHour, // total costos indirectos
+                totalIndirectmonth:indirectCostTotal, // total costos indirectos
                 totalProducts: materialsPriceTotal,
                 totalPrice: this.total,// precio total de todo
                 notes:this.notes
