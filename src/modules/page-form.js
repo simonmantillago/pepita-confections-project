@@ -9,6 +9,7 @@ export class pageForm extends LitElement {
         this.productAvailability=choiseData.availability
         this.notes=[]
         this.total=0
+        this.report={}
     }
 
     static styles = css`
@@ -210,7 +211,7 @@ export class pageForm extends LitElement {
             
             ;
             console.log(this.productAvailability)
-            const report={
+            this.report={
                 product:this.productAvailability,//  info de el producto, materiales y coostos por materiial
                 indirectCost:indirectCostData, // info costos indirecctos, nombre y precio por mes
                 employeesData:employeesData, // info empleados, salario, horas, nombre, paycheck
@@ -222,6 +223,8 @@ export class pageForm extends LitElement {
                 notes:this.notes
             }
             //https://665ce299e88051d60404f656.mockapi.io/Reports
+
+
 
         })
 
