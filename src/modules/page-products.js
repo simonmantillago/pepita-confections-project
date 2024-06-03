@@ -8,6 +8,8 @@ export class pageProducts extends LitElement {
         this.products={}
         this.inventory={}
         this.price=0
+        this.productSelected={}
+        this.availability={}
 
     }
     static properties = {
@@ -19,9 +21,9 @@ export class pageProducts extends LitElement {
         const cardContainer=this.shadowRoot.querySelector('.cards-container')
         cardContainer.addEventListener('click',(event=>{
             const product=event.target.closest('.card')
-            const productSelected=this.products[product.id]
-            const SelectedMaterials=productSelected['materialInfo']
-            console.log(SelectedMaterials)
+            this.productSelected=this.products[product.id]
+            const SelectedMaterials=this.productSelected['materialInfo']
+            this.price=0
             if (SelectedMaterials){
             (data['Inventory']['create']['category'][1]).map(element => {
                 let sum=this.catchMaterials(element,SelectedMaterials)
@@ -29,8 +31,7 @@ export class pageProducts extends LitElement {
                 this.price+=sum
             }
             })}
-
-            console.log(this.price)
+            this.nextpage()
             
 
         }))
@@ -48,30 +49,40 @@ export class pageProducts extends LitElement {
         }
 
         }
-        catchMaterials(element,SelectedMaterials){
-            let elementQuantity=0;
-            let tagElement=""
-            let priceElement=0;
-            let total=0;
-            Object.entries(SelectedMaterials).map(([key, item]) =>{
-                if(key===`${element}Cuantity`){
-                    elementQuantity=item
-                }
-                if(key===`${element}` && item!='N/A'){
-                    tagElement= item
-                    Object.entries(this.inventory).map(([keys, items]) =>{
-                        if((items['category']===element) && (items['tag']===tagElement)){
-                            priceElement= items['price']
-                        }
-                    })
+    catchMaterials(element,SelectedMaterials){
+        let elementQuantity=0
+        let productUnit=''
+        let tagElement=""
+        let priceElement=0;
+        let total=0;
+        let productAvailability
+        
+        Object.entries(SelectedMaterials).map(([key, item]) =>{
+            if(key===`${element}Cuantity`){
+                elementQuantity=item
+                Object.entries(SelectedMaterials).map(([key, item]) =>{
+                    if(key===`${element}` && item!='N/A'){
+                        tagElement= item
+                        Object.entries(this.inventory).map(([keys, items]) =>{
+                            if((items['category']===element) && (items['tag']===tagElement)){
+                                priceElement= items['price']
+                                productAvailability=items['stock']
+                                productUnit=items['unit']
+                                this.availability[element]=[tagElement,parseInt(productAvailability),parseInt(elementQuantity),productUnit,priceElement]        
+                            }})}
+                })
+            }
+            
+            total=(elementQuantity*priceElement)       
+        })  
+        return total
+    }
 
-                }
-                
-                total=(elementQuantity*priceElement)
-                
-            })
-            return total
-        }
+    nextpage(){
+        const formpage='<page-form></page-form>';
+        this.parentNode.insertAdjacentHTML('beforeend',formpage);
+    }
+
     static styles = css` 
     img{
         width:100%;   
