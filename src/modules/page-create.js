@@ -39,43 +39,48 @@ export class pageCreate extends LitElement {
     render() {
         return html`
       <div>${this.crudOption} ${this.type}</div>
-      <form class="form-container">
-        ${Object.entries(data[this.type][this.crudOption]).map(
-            ([key, item]) => {
-                if (Array.isArray(item[1])) {
-                    return html`
-                <div>
-                  <label for="options">${item[0]}</label>
-                  <select id="options" name="${key}">
-                    ${item[1].map((element) => {
-                        return html` <option>${element}</option> `;
-                    })}
-                  </select>
-                </div>
-              `;
-                } else {
-                    return html`
-                <div class="${key}">
-                  <label for="${key}" class="form__label"
-                    >${item[0] === "date" || item[0] === "color"
-                            ? item[1]
-                            : ""}</label
-                  >
-                  <input
-                    type=${item[0]}
-                    class="form__field"
-                    placeholder="${item[1]}"
-                    required=""
-                    id="${key}"
-                    name="${key}"
-                  />
-                </div>
-              `;
-                }
-            }
-        )}
-        <div>${this.type === "Products" ? this.newhtml() : ""}</div>
-      </form>
+      <div style="display:flex;">
+        <form class="form-container">
+          ${Object.entries(data[this.type][this.crudOption]).map(
+              ([key, item]) => {
+                  if (Array.isArray(item[1])) {
+                      return html`
+                  <div>
+                    <label for="options">${item[0]}</label>
+                    <select id="options" name="${key}">
+                      ${item[1].map((element) => {
+                          return html` <option>${element}</option> `;
+                      })}
+                    </select>
+                  </div>
+                `;
+                  } else {
+                      return html`
+                  <div class="${key}">
+                    <label for="${key}" class="form__label"
+                      >${item[0] === "date" || item[0] === "color"
+                              ? item[1]
+                              : ""}</label
+                    >
+                    <input
+                      type=${item[0]}
+                      class="form__field"
+                      placeholder="${item[1]}"
+                      required=""
+                      id="${key}"
+                      name="${key}"
+                    />
+                  </div>
+                  `;
+                  }
+              }
+          )}
+          <div>${this.type === "Products" ? this.newhtml() : ""}</div>
+          </form>
+          <div style="width: max-content; background-color:">
+            <img style="width: 15%;" src="../imgs/T-shirt.png">
+          </div>
+        </div>
       <a class="back-button">← Go back</a>
       <a class="submmit">Submit</a>
     `;
