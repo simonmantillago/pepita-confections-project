@@ -68,7 +68,7 @@ export class pageProducts extends LitElement {
                                 priceElement= items['price']
                                 productAvailability=items['stock']
                                 productUnit=items['unit']
-                                this.availability[element]=[tagElement,parseInt(productAvailability),parseInt(elementQuantity),productUnit]        
+                                this.availability[element]=[tagElement,parseInt(productAvailability),parseInt(elementQuantity),productUnit,priceElement]        
                             }})}
                 })
             }

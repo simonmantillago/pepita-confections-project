@@ -130,12 +130,11 @@ export class pageCreate extends LitElement {
                     color: color,
                 };
             } else if (this.type === "Products") {
-                const { tag, time, image, name, ...materials } = inputData;
+                const { tag, image, name, ...materials } = inputData;
                 const imgUrl = `/imgs/${image}.png`;
                 this.Submit = {
                     name: name,
                     tag: tag,
-                    time: time,
                     image: imgUrl,
                     materialInfo: materials,
                 };

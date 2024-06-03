@@ -4,11 +4,10 @@ export class pageForm extends LitElement {
     connectedCallback(){
         super.connectedCallback()
         const choiseData=document.querySelector('page-new')
-        this.price=choiseData.price
-        this.productSelected=choiseData.productSelected
+        this.materialsPrice=choiseData.price
+        this.productSelected=choiseData.productSelected // me sirve para el time, tag y name
         this.productAvailability=choiseData.availability
         console.log(this.productAvailability)
-        console.log(this.price)
         this.total=0
     }
 
@@ -60,13 +59,14 @@ export class pageForm extends LitElement {
             <div class="container">
                 <form class="customerForm">
                     <div class="form__group field customerName">
-                        
-                    
-                    <label for="Salary" class="form__label">Salary</label>
-                        <input type="input" class="form__field" placeholder="Salary per hour" required="" id="Salary" name="Salary">
                         <label for="productQuantity" class="form__label">how Many</label>
                         <input type="input" class="form__field" placeholder="How many products" required="" id="productQuantity" name="productQuantity">
                     </div>
+                    <div>
+                    <label for="generateHtml">¿Do you have employees?   </label>
+                    <label><button id="addEmployee" type="button">+</button></label>
+                    </div>
+                    <div class="employeeForm"></div>
                     <div>
                         <label for="generateHtml">¿Do you have indirect cost?   </label>
                         <label><button id="generateCost" type="button">+</button></label>
@@ -93,14 +93,14 @@ export class pageForm extends LitElement {
             
             
             const costDiv = document.createElement('div');
-            let id=Date.now().toString(8)
+            let idCost=Date.now().toString(8)
             costDiv.classList.add('IndirectCost');
             costDiv.innerHTML = `
                 <div class="cost">
                     <label for="newKey" class="form-label">Which Cost</label>
-                    <input type="text" class="form-control" name="newkey${id}" id="newKey">
+                    <input type="text" class="form-control" name="newkey${idCost}" id="newKey">
                     <label for="newValue" class="form-label">Cost per month</label>
-                    <input type="number" class="form-control" name="newValue${id}" id="newValue">
+                    <input type="number" class="form-control" name="newValue${idCost}" id="newValue">
                     <button type="button" class="removeCost">-</button>
                 </div>
                 
@@ -116,6 +116,36 @@ export class pageForm extends LitElement {
         });
 
 
+
+
+        const employees = this.shadowRoot.querySelector('.employeeForm');
+        const addEmployee =this.shadowRoot.querySelector('#addEmployee')
+        addEmployee.addEventListener('click', (event) => {
+            
+            
+            const employeeDiv = document.createElement('div');
+            let idEmployee=Date.now().toString(8)
+            employeeDiv.classList.add('IndirectCost');
+            employeeDiv.innerHTML = `
+                <div class="cost">
+                    <label for="newKey" class="form-label">New employee</label>
+                    <input type="text" class="form-control" placeholder="Name" name="keyEmployee${idEmployee}" id="newKey">
+                    <input type="number" class="form-control" placeholder="Salary per hour" name="ValueEmployee${idEmployee}" id="newValue">
+                    <input type="number" class="form-control" placeholder="Hours" name="hoursEmployee${idEmployee}" id="newValue">
+                    <button type="button" class="removeEmployee">-</button>
+                </div>
+                
+            `;
+            
+            // Add event listener to the remove button
+            const removeEmployee = employeeDiv.querySelector('.removeEmployee');
+            removeEmployee.addEventListener('click', () => {
+                employees.removeChild(employeeDiv);
+            });
+
+            employees.appendChild(employeeDiv);
+        });
+
         const generateButton=this.shadowRoot.querySelector('#sendInfo')
         generateButton.addEventListener('click',(event)=>{
             const container = this.shadowRoot.querySelector(".customerForm");
@@ -123,30 +153,65 @@ export class pageForm extends LitElement {
             const inputData = JSON.parse(JSON.stringify(data));
             const {Salary,productQuantity,...rest}=inputData
             console.log(rest)
+            const indirectCostData={}
+            const employeesData={}
             let indirectCostTotal=0
-            const transformedData={}
+            let employeesTotal=0
+            let hoursTotal
+
             Object.keys(rest).forEach(key => {
                 
                 if (key.startsWith("newkey")) {// Verifica si key comienza con "newkey"
                     const valueKey = `newValue${key.slice(6)}`;// Obtener el valor de newValue con el valor de la key pero empezando desde la letra 6
-                    transformedData[data[key]] = data[valueKey];// Agregar al nuevo objeto con la clave de newkey y el valor correspondiente de newValue
+                    indirectCostData[rest[key]] = rest[valueKey];// Agregar al nuevo objeto con la clave de newkey y el valor correspondiente de newValue
+                }else if (key.startsWith("keyEmployee")){
+                    const salary = `ValueEmployee${key.slice(11)}`
+                    const hours = `hoursEmployee${key.slice(11)}`
+                    employeesData[rest[key]]={
+                        salary:rest[salary],
+                        hours:rest[hours],
+                        paycheck:parseFloat(rest[salary])*parseFloat(rest[hours])
+
+                    }
                 }
             });
-            Object.values(transformedData).forEach(value=>{
+
+            Object.values(indirectCostData).forEach(value=>{
                 indirectCostTotal+=parseFloat(value)
             })
+            
+            Object.values(employeesData).forEach(employe=>{
+                Object.entries(employe).forEach(([item, values])=>{
+                if (item==='paycheck'){
+                    employeesTotal+=values
+                } else if (item ==='hours'){
+                    hoursTotal+=values
+                }
+            })
+            })
 
-            const indirectCostPerHour=indirectCostTotal/730
-            this.total=(((parseFloat(Salary)+parseFloat(indirectCostPerHour))*(this.productSelected['time']))+this.price)*productQuantity
-            console.log(this.total)
 
+            const indirectCostPerHour=indirectCostTotal/720
+            this.total=(parseFloat(indirectCostPerHour)*hoursTotal)+(this.materialsPrice*parseFloat(productQuantity))+parseFloat(employeesTotal)
+            
+            
             Object.entries(this.productAvailability).forEach(([item, value])=> {
                 if(value[1]<(value[2]*productQuantity)){
-                    console.log(`hace falta ${(value[2]*productQuantity)-value[1]} ${value[3]} de ${item} con el ID: ${value[0]}`)
+                    console.log(`hace falta ${(parseFloat(value[2])*parseFloat(productQuantity)-value[1])} ${value[3]} de ${item} con el ID: ${value[0]}`)
                 }
                 
             });
 
+            const report={
+                total:this.total,
+                product:this.productAvailability,
+                totalMaterial:this.materialsPrice,
+                employes:[Salary]
+
+
+
+
+            }
 
 
         })
