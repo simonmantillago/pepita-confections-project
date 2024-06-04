@@ -53,7 +53,7 @@ export class pages extends LitElement {
         padding: 10px 20px;
         border-radius: 7px;
         border: 1px solid rgb(61, 106, 255);
-        font-size: 14px;
+        font-size: 1em;
         text-transform: uppercase;
         font-weight: 600;
         letter-spacing: 2px;
@@ -185,6 +185,14 @@ export class pages extends LitElement {
       .back-button-container{
         align-self:center;
       }
+      @media (min-width: 600px) {
+        .title{
+          font-size:6em;
+        }
+        .button{
+          font-size:1.5em;
+        }
+      }
 `;
   constructor() {
     super();
@@ -208,19 +216,8 @@ export class pages extends LitElement {
         </div>
         <div class = "back-button-container">
           <button class="back-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10 5L3 12m0 0l7 7m-7-7h18"
-              ></path>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
             </svg>
             <p>Go back</p>
           </button>
