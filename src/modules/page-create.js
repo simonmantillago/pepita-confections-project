@@ -251,12 +251,7 @@ export class pageCreate extends LitElement {
     });
 
 
-        const backbutton = this.shadowRoot.querySelector(".back-button");
-        backbutton.addEventListener("click", () => {
-            const principalPage = `<principal-pages></principal-pages>`;
-            this.parentNode.insertAdjacentHTML("beforeend", principalPage);
-            this.parentNode.removeChild(this);
-        });
+      
 
         const submmitButton = this.shadowRoot.querySelector(".submmit");
         submmitButton.addEventListener("click", async (event) => {
@@ -330,136 +325,104 @@ export class pageCreate extends LitElement {
         });
     }
     async findData() {
-        try {
-            const response = await fetch(
-                `https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`
-            );
-            this.materials = await response.json();
-            this.isReady = true;
-            this.requestUpdate(); // Trigger a re-render to display materials
-        } catch (error) {
-            console.error("Error fetching materials:", error);
-
-        }
-
-        const responseData = await response.json();
-        console.log("Respuesta de la API:", responseData);
+      try {
+          const response = await fetch(
+              `https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`
+          );
+          this.materials = await response.json();
+          this.isReady = true;
+          this.requestUpdate(); // Trigger a re-render to display materials
       } catch (error) {
-        console.error("Error al enviar POST a la API:", error);
+          console.error("Error fetching materials:", error);
       }
-    });
-  }
-  async findData() {
-    try {
-      const response = await fetch(
-        `https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`
-      );
-      this.materials = await response.json();
-      this.isReady = true;
-      this.requestUpdate(); // Trigger a re-render to display materials
-    } catch (error) {
-      console.error("Error fetching materials:", error);
-    }
   }
 
-  newhtml() {
-    return html`
-      ${data["Inventory"]["create"]["category"][1].map((element) => {
-        return html`${this.createMaterialsHtml(element)}`;
+    newhtml() {
+      return html`
+    ${data["Inventory"]["create"]["category"][1].map((element) => {
+          return html`${this.createMaterialsHtml(element)}`;
       })}
-    `;
+  `;
   }
 
   createMaterialsHtml(material) {
     return html`
-        <div>
-        <label for=${material}>${material}</label>
-        <select id=${material} name=${material} @change="${(event) => this.materialSelected(event, material)}" >
-          <option value="N/A">N/A</option>
-          ${this.renderMaterials(material)}
-        </select>
-        <input type="number" class="form__field ${material}Cuantity" placeholder="Quantity" required="" id="${material}Cuantity" name="${material}Cuantity" disabled />
-        <input id="${material}Unit" name="${material}Unit" class="${material}Unit inp" disabled />
-        <input id="${material}Color" name="${material}Color" class="${material}color inp" disabled />
-      </div>
-    `;
-  }
-
-
-        renderMaterials(materialType) {
-            if (this.isReady) {
-                return this.materials.map(material => {
-                    if (material['category'] === materialType) {
-                        return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
-                    }
-                });
-            }
-            return html``;
-        }
-                            
-        materialSelected(event, material){
-            const isNA = event.target.value
-            const selectedMaterial = event.target;
-            const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
-            const unit = selectedOption.getAttribute('unit');
-            const color = selectedOption.getAttribute('materialColor');
-            const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
-            const materialColor = this.shadowRoot.querySelector(`.${material}color`)
-            const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
-            if(isNA==="N/A"){
-                cuantityInput.disabled=true
-                materialColor.disabled=true
-                materialUnit.disabled=true
-                materialUnit.value= ""
-                cuantityInput.value= ""
-                materialColor.value =""
-                materialColor.style.backgroundColor="transparent"
-                
-            }else{
-                cuantityInput.disabled=false
-                materialColor.disabled=false
-                materialUnit.disabled=false
-                materialUnit.setAttribute("readonly", "readonly")
-                materialColor.setAttribute("readonly", "readonly")
-                materialUnit.value= unit
-                materialColor.value =color
-                materialColor.style.color=(color)
-                materialColor.style.backgroundColor=(color)}
-        }
-      });
-    }
-    return html``;
-  }
-
-  materialSelected(event, material) {
-    const isNA = event.target.value;
-    const selectedMaterial = event.target;
-    const selectedOption =
-      selectedMaterial.options[selectedMaterial.selectedIndex];
-    const unit = selectedOption.getAttribute("unit");
-    const color = selectedOption.getAttribute("materialColor");
-    const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`);
-    const materialColor = this.shadowRoot.querySelector(`.${material}color`);
-    const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`);
-    if (isNA === "N/A") {
-      cuantityInput.disabled = true;
-      materialColor.disabled = true;
-      materialUnit.disabled = true;
-      materialUnit.value = "";
-      materialColor.value = "";
-      materialColor.style.backgroundColor = "transparent";
-    } else {
-      cuantityInput.disabled = false;
-      materialColor.disabled = false;
-      materialUnit.disabled = false;
-      materialUnit.setAttribute("readonly", "readonly");
-      materialColor.setAttribute("readonly", "readonly");
-      materialUnit.value = unit;
-      materialColor.value = color;
-      materialColor.style.color = color;
-      materialColor.style.backgroundColor = color;
-    }
-  }
+  <div>
+    <label for=${material}>${material}</label>
+    <select
+      id=${material}
+      name=${material}
+      @change="${(event) => this.materialSelected(event, material)}"
+    >
+      <option value="N/A">N/A</option>
+      ${this.renderMaterials(material)}
+    </select>
+    <input
+      type="number"
+      class="form__field ${material}Cuantity"
+      placeholder=""
+      required=""
+      id="${material}Cuantity"
+      name="${material}Cuantity"
+      disabled
+    />
+    <input
+      id="${material}Unit"
+      name="${material}Unit"
+      class="${material}Unit"
+      disabled
+    />
+    <input
+      id="${material}Color"
+      name="${material}Color"
+      class="${material}color"
+      disabled
+    />
+  </div>
+`;
 }
+
+    renderMaterials(materialType) {
+        if (this.isReady) {
+            return this.materials.map(material => {
+                if (material['category'] === materialType) {
+                    return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
+                }
+            });
+        }
+        return html``;
+    }
+                        
+    materialSelected(event, material){
+        const isNA = event.target.value
+        const selectedMaterial = event.target;
+        const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
+        const unit = selectedOption.getAttribute('unit');
+        const color = selectedOption.getAttribute('materialColor');
+        const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
+        const materialColor = this.shadowRoot.querySelector(`.${material}color`)
+        const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
+        if(isNA==="N/A"){
+            cuantityInput.disabled=true
+            materialColor.disabled=true
+            materialUnit.disabled=true
+            materialUnit.value= ""
+            cuantityInput.value= ""
+            materialColor.value =""
+            materialColor.style.backgroundColor="transparent"
+            
+        }else{
+            cuantityInput.disabled=false
+            materialColor.disabled=false
+            materialUnit.disabled=false
+            materialUnit.setAttribute("readonly", "readonly")
+            materialColor.setAttribute("readonly", "readonly")
+            materialUnit.value= unit
+            materialColor.value =color
+            materialColor.style.color=(color)
+            materialColor.style.backgroundColor=(color)}
+    }
+}
+
 
 customElements.define("page-create", pageCreate);
