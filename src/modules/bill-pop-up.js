@@ -26,10 +26,12 @@ export class billPopUp extends LitElement{
             <hr>
             <h2>Material's Info</h2>
             <div class="materials"> 
-            ${this.ShowEfective()} 
-            </div>
-            <div class="materials"> 
             ${this.ShowMaterials()} 
+            </div>
+            <hr>
+            <h2>Efective Percent</h2>
+            <div class="efective"> 
+            ${this.ShowEfective()}  
             </div>
             <hr>
             <h2>employees's Info</h2>
@@ -176,10 +178,19 @@ export class billPopUp extends LitElement{
     }
     ShowEfective(){
             return html`
-                    <h2>Efective Percent</h2>
-                    <div>${this.billInfo['quantity']}</div>
-                    <div>${this.billInfo['defectiveProducts']}</div>
-                    <div>The efficiency is: ${this.billInfo['efectivity']}</div>
+                    <table> 
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Defective</th>
+                            <th>efficiency</th>
+                        </tr>
+                        <tr>
+                            <td>${this.billInfo['quantity']}</td>
+                            <td>${this.billInfo['defectiveProducts']}</td>
+                            <td>${this.billInfo['efectivity']}</td>
+                        
+                        </tr>
+                    </table>
                 
                 `
     }

@@ -209,7 +209,7 @@ export class pageForm extends LitElement {
             let materialsPriceTotal=this.materialsPrice*productQuantity
             this.total=materialsPriceTotal+indirectCostTotalPrice+employeesTotal
             let tag= Date.now().toString(16)
-            let efectivity= `${(((quantity)-(defective))/(quantity))*100}%`
+            let efectivity= `${(((productQuantity)-(defective))/(productQuantity))*100}%`
             
             ;
             console.log(this.productAvailability)

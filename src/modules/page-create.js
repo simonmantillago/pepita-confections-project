@@ -253,7 +253,7 @@ export class pageCreate extends LitElement {
 
       
 
-        const submmitButton = this.shadowRoot.querySelector(".submmit");
+        const submmitButton = this.shadowRoot.querySelector(".submit");
         submmitButton.addEventListener("click", async (event) => {
             const container = this.shadowRoot.querySelector(".form-container");
             const data = Object.fromEntries(new FormData(container).entries());
