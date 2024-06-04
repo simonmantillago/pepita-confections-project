@@ -34,7 +34,6 @@ export class pageForm extends LitElement {
             justify-content: center;
             align-items: center;
             padding: 10px;
-            overflow-y:scroll;
         }
         .customerForm {
             width: 80%;
@@ -62,11 +61,11 @@ export class pageForm extends LitElement {
             <div class="container">
                 <form class="customerForm">
                     <div class="form__group field customerName">
-                        <label for="productQuantity" class="form__label">how Many</label>
+                        <label for="productQuantity" class="form__label">How many</label>
                         <input type="input" class="form__field" placeholder="How many products" required="" id="productQuantity" name="productQuantity">
                     </div>
                     <div>
-                    <label for="generateHtml">¿Do you have employees?   </label>
+                    <label for="generateHtml">¿Do you have employees?</label>
                     <label><button id="addEmployee" type="button">+</button></label>
                     </div>
                     <div class="employeeForm"></div>

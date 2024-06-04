@@ -194,6 +194,181 @@ export class pageSearch extends LitElement {
       .container{
         padding:20px;
       }
+      .submit {
+        position: relative;
+        background-color: #007bff !important;
+        border-radius: 5px;
+        box-shadow: #012bff 0px 4px 0px 0px;
+        padding: 15px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        box-sizing: border-box;
+        width: 154px;
+        height: 49px;
+        color: #fff;
+        border: none;
+        font-size: 20px;
+        transition: all 0.3s ease-in-out;
+        z-index: 1;
+        overflow: hidden;
+        align-self: center;
+        
+      }
+    
+      .submit::before {
+        content: "";
+        background-color: #018bff !important;
+        width: 0;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: width 700ms ease-in-out;
+        display: inline-block;
+      }
+    
+      .submit:hover::before {
+        width: 100%;
+      }
+      .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+    
+      .form-container div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;}
+    
+      .form-container label {
+        font-size: 1.2em;
+        color: #fff;
+        margin-bottom: 5px;
+        text-transform: capitalize;
+      }
+    
+      .form-container input, .form-container select {
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width:max-content;
+      }
+    
+      .form-container input:focus, .form-container select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+    
+      .form-container input[type="color"] {
+        padding: 5px;
+        width: 100%;
+        height: 50px;
+      }
+      .editSection{
+        display:flex;
+        flex-direction:column;
+      }
+      .content, .search-bar{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    ul{
+        padding:0;
+        display:flex;
+        gap:30px;
+        flex-direction:column;
+
+    }
+    .buttons-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .search-bar h2{
+        font-size: 2em;
+        text-transform: capitalize;
+        text-align: center;
+        font-weight: 700;
+        background-image: linear-gradient(to right, #ffff 15%, #14e2cd);
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+    .search-bar input{
+        
+        background-color: #f5f5f5;
+        color: #242424;
+        padding: .15rem .5rem;
+        
+        border-radius: 4px;
+        outline: none;
+        border: none;
+        line-height: 1.15;
+        box-shadow: 0px 10px 20px -18px;
+    }
+    .search-bar input:focus{  
+        border-bottom: 2px solid #5b5fc7;
+        border-radius: 4px 4px 2px 2px;
+    }
+    .search-bar input:focus{
+        outline: 1px solid lightgrey;
+    }
+    .itemInfo{
+        display:flex;
+        flex-direction:column;
+        gap:5px;
+        background-color: gray;
+        border-radius:20px;
+        padding: 30px;
+        width: 200px;
+
+    }
+    .itemInfo h4{
+        font-size:1.5em
+    }
+    .itemInfo p{
+        font-size:1.2em
+    }
+    
+
+      @media (min-width: 600px) {
+        
+        .submit{
+            align-self: flex-end;
+        }
+        ul {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            width: 100%;
+          }
+        .search-bar h2{
+            font-size: 4em;
+        }
+        .search-bar input{
+            width:50vw;
+            height:50px;
+        }
+        .content h3{
+            font-size:2em
+        }
+        .itemInfo{
+            background-color: transparent;
+        }
+        .itemInfo:hover{
+            background-color: gray;
+        }
+        .submit{
+            align-self:center;
+        }
+        }
     `;
     static get properties() {
         return {
@@ -310,30 +485,33 @@ export class pageSearch extends LitElement {
     render() {
         return html`
         <div class='container'>
-        <button class="back-button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
-            </svg>
-            <p>Go back</p>
-          </button>
-            <div class="search-bar">
-                <label for="searcher"><h2>Type the ${this.type}'s id you're looking for!</h2></label>
-                <input type="text" id="searcher" @input="${e => this.handleInputChange(e, 'search')}">  
+            <button class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
+                </svg>
+                <p>Go back</p>
+            </button>
+            <div class="content">
+                <div class="search-bar">
+                    <label for="searcher"><h2>Type the ${this.type}'s id you're looking for!</h2></label>
+                    <input type="text" id="searcher" @input="${e => this.handleInputChange(e, 'search')}" placeholder="Search">  
+                </div>
+                <h3>---- Results ----</h3>
+                <ul>
+                ${this.searchItem !== '' 
+                    ? this.data.filter(item => item.tag.includes(this.searchItem)).map(item => this.renderItem(item))  
+                    : this.data.map(item => this.renderItem(item)) 
+                }
+                </ul>
             </div>
-            <h3>---- Results ----</h3>
-            <ul>
-            ${this.searchItem !== '' 
-                ? this.data.filter(item => item.tag.includes(this.searchItem)).map(item => this.renderItem(item))  
-                : this.data.map(item => this.renderItem(item)) 
-            }
-            </ul>
         </div>
         `;
     }
 
     renderItem(item) {
         return html`
-            <li>
+        <div class="itemInfo">
+            <li style="list-style-type: none;">
                 <h4>${item.tag}</h4>${this.renderItemDetails(item)} 
                 <div class="buttons-container">
                 <button @click="${() => this.setEditItem(item)}"class="edit-button"><svg class="edit-svgIcon" viewBox="0 0 512 512">
@@ -343,43 +521,58 @@ export class pageSearch extends LitElement {
                 </div>
                 ${this.editItem && this.editItem.id === item.id ? this.renderEditForm() : ''}
             </li>
+        </div>
         `;
     }
 
     renderItemDetails(item) {
         // Muestra los detalles según el tipo de dato
         if (this.type === 'Inventory') {
-            return html`Name: ${item.name} - Stock: ${item.stock}`;
+            return html`<p><strong>Name:</strong> ${item.name}<br><strong>Stock:</strong> ${item.stock}</p>`;
         } else {
-            return html`Cuantity: ${item.materialInfo.telaCuantity} - Time: ${item.time}`;
+            return html`<p><strong>Cuantity:</strong> ${item.materialInfo.telaCuantity}<br><strong>Time:</strong> ${item.time}</p>`;
         }
     }
 
     renderEditForm() {
         return html`
-            <div>
+            <div class="form-container">
                 ${this.type === 'Inventory' ? this.renderInventoryEditForm() : this.renderProductEditForm()}  
-                <button @click="${() => this.updateItem()}">Guardar</button>  
+                <button @click="${() => this.updateItem()}" class="submit">Guardar</button>  
             </div>
         `;
     }
 
     renderInventoryEditForm() {
         return html`
-            <label>Name: <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Description: <input type="text" name="description" .value="${this.editItem.description}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Suplier: <input type="text" name="suplier" .value="${this.editItem.suplier}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Price: <input type="text" name="price" .value="${this.editItem.price}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Stock: <input type="text" name="stock" .value="${this.editItem.stock}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Ubication: <input type="text" name="ubication" .value="${this.editItem.ubication}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Notes: <input type="text" name="notes" .value="${this.editItem.notes}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
+        <div class="editSection">
+        <label for="name">Name</label> <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>
+        <div class="editSection">
+        <label for="description">Description</label> <input type="text" name="description" .value="${this.editItem.description}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>
+        <div class="editSection">
+        <label for="supplier">Supplier</label><input type="text" name="supplier" .value="${this.editItem.supplier}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>
+        <div class="editSection">
+        <label for="price">Price</label> <input type="text" name="price" .value="${this.editItem.price}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>
+        <div class="editSection">
+        <label for="stock">Stock</label> <input type="text" name="stock" .value="${this.editItem.stock}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>
+        <div class="editSection">
+        <label for="location">Location</label> <input type="text" name="location" .value="${this.editItem.location}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>
+        <div class="editSection">
+        <label for="notes">Notes</label> <input type="text" name="notes" .value="${this.editItem.notes}" @input="${e => this.handleInputChange(e, 'edit')}">
+        </div>  
            
         `;
     }
 
     renderProductEditForm() {
         return html`
-            <label>Name: <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
+            <label for="name">Name</label> <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}">
             
         `;
     }
