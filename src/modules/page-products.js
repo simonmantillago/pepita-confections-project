@@ -121,7 +121,8 @@ export class pageProducts extends LitElement {
             <img src="../../imgs/no${material}.png">`
         }
 
-    
+
+        
         
     }
 

@@ -1,4 +1,5 @@
 import { LitElement, css, html } from 'lit';
+import { billPopUp } from './bill-pop-up';
 
 export class pageForm extends LitElement {
     connectedCallback(){
@@ -7,6 +8,7 @@ export class pageForm extends LitElement {
         this.materialsPrice=choiseData.price
         this.productSelected=choiseData.productSelected // me sirve para el time, tag y name
         this.productAvailability=choiseData.availability
+        this.inventory=choiseData.inventory
         this.notes=[]
         this.total=0
         this.report={}
@@ -188,42 +190,46 @@ export class pageForm extends LitElement {
                 }
                 if (item ==='hours'){
                     hoursTotal+=parseFloat(values)
-                }
-            })
-            })
+                }})})
+
+
+            Object.entries(this.productAvailability).forEach(([item, value])=> {
+                value.push((value[2]*productQuantity))
+                if(value[1]<(value[2]*productQuantity)){
+                    this.notes.push(`hace falta ${(parseFloat(value[2])*parseFloat(productQuantity)-value[1])} ${value[3]} de ${item} con el ID: ${value[0]}`)
+                }})
+
 
             const indirectCostPerHour=indirectCostTotal/720
             const indirectCostTotalPerHour=parseFloat(indirectCostPerHour)*hoursTotal
-            this.total=(indirectCostTotalPerHour)+(this.materialsPrice*parseFloat(productQuantity))+parseFloat(employeesTotal)
+            const indirectCostTotalPrice = ((parseFloat(hoursTotal)<1)? indirectCostTotal : indirectCostTotalPerHour)
+            console.log(`indirectcostterniario ${indirectCostTotalPrice}`)
             let materialsPriceTotal=this.materialsPrice*productQuantity
+            this.total=materialsPriceTotal+indirectCostTotalPrice+employeesTotal
             
             
-            Object.entries(this.productAvailability).forEach(([item, value])=> {
-
-                
-                value.push((value[2]*productQuantity))
-                if(value[1]<(value[2]*productQuantity)){
-
-                    this.notes.push(`hace falta ${(parseFloat(value[2])*parseFloat(productQuantity)-value[1])} ${value[3]} de ${item} con el ID: ${value[0]}`)
-                }
-                console.log(this.notes)
-            })
             
             ;
             console.log(this.productAvailability)
             this.report={
+                quantity:productQuantity,//cuantos productos
                 product:this.productAvailability,//  info de el producto, materiales y coostos por materiial
                 indirectCost:indirectCostData, // info costos indirecctos, nombre y precio por mes
                 employeesData:employeesData, // info empleados, salario, horas, nombre, paycheck
                 totalEmployees:employeesTotal, // total que hay que pagar a empleados
-                totalHours:hoursTotal, // total de horas
-                totalIndirectHours:indirectCostTotalPerHour, // total costos indirectos
-                totalIndirectmonth:indirectCostTotal, // total costos indirectos
+                totalHours:hoursTotal,
+                totalIndirect:indirectCostTotalPrice,
                 totalProducts: materialsPriceTotal,
                 totalPrice: this.total,// precio total de todo
-                notes:this.notes
             }
-            //https://665ce299e88051d60404f656.mockapi.io/Reports
+            //
+
+            const billPopUp = `<bill-pop-up></bill-pop-up>`;
+            const createPage = document.querySelector('page-new')
+            this.parentNode.insertAdjacentHTML("beforeend", billPopUp);
+            this.parentNode.removeChild(createPage);
+            this.parentNode.removeChild(this);
+            
 
 
 
