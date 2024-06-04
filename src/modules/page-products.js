@@ -2,6 +2,131 @@ import { LitElement, css, html } from 'lit';
 import data from "../data/pages-data.json"
 
 export class pageProducts extends LitElement {
+    static styles = css` 
+    img{
+        width:100%;   
+    }
+    .card{
+        display:inline-block;
+        width:250px;
+    }
+    .big-img{
+        position:relative;
+        border-radius:20px;
+    }
+    .product-img{
+        width:250px;
+    }
+    .bot-img{
+        display:flex;
+        position:absolute;
+        width:30%;
+        bottom:1.5%;
+        left:0px;
+    }
+    .title{
+        position:absolute;
+        width:70%;
+        bottom:1.5%;
+        right:0px;
+        backgroundColor:white;
+    }
+    .back-button {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        --primary-color: #ffff;
+        --hovered-color: #ffff;
+        position: relative;
+        display: flex;
+        font-weight: 600;
+        font-size: 20px;
+        gap: 0.5rem;
+        align-items: center;
+      }
+    
+      .back-button p {
+        margin: 0;
+        position: relative;
+        font-size: 20px;
+        color: var(--primary-color);
+      }
+    
+      .back-button::after {
+        position: absolute;
+        content: "";
+        width: 0;
+        right: 0;
+        bottom: -7px;
+        background: var(--hovered-color);
+        height: 2px;
+        transition: 0.3s ease-out;
+      }
+    
+      .back-button p::before {
+        position: absolute;
+        content: "Go back";
+        width: 0%;
+        inset: 0;
+        color: var(--hovered-color);
+        overflow: hidden;
+      }
+    
+      .back-button:hover::after {
+        width: 100%;
+        left: auto;
+        right: 0;
+      }
+    
+      .back-button:hover p::before {
+        width: 100%;
+      }
+    
+      .back-button:hover svg {
+        transform: translateX(-4px);
+        color: var(--hovered-color);
+      }
+    
+      .back-button svg {
+        color: var(--primary-color);
+        transition: 0.2s;
+        position: relative;
+        width: 15px;
+        transition-delay: 0.2s;
+      }
+      .content{
+        padding:20px;
+      }
+      .titleTop{
+        font-size: 2em;
+        text-transform: capitalize;
+        text-align: center;
+        font-weight: 700;
+        background-image: linear-gradient(to right, #ffff 15%, #14e2cd);
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+    .cards-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+    }
+    .bot-img {
+        display: flex;
+        position: absolute;
+        width: 30%;
+        bottom: 7px;
+        left: 15px;
+    }
+    .product-img{
+        border-radius:20px;
+    }
+    
+    `
 
     constructor(){
         super()
@@ -33,7 +158,7 @@ export class pageProducts extends LitElement {
             })}
             this.nextpage()
         }))
-        const backButton =this.shadowRoot.querySelector('.backButton')
+        const backButton =this.shadowRoot.querySelector('.back-button')
         backButton.addEventListener('click',()=>{
             const generateComponent = `<principal-pages></principal-pages>`;
             this.parentNode.insertAdjacentHTML("beforeend", generateComponent);
@@ -86,41 +211,19 @@ export class pageProducts extends LitElement {
     nextpage(){
         const formpage='<page-form></page-form>';
         this.parentNode.insertAdjacentHTML('beforeend',formpage);
+        this.parentNode.removeChild(this);
     }
-
-    static styles = css` 
-    img{
-        width:100%;   
-    }
-    .card{
-        display:inline-block;
-        width:250px;
-    }
-    .big-img{
-        position:relative;
-    }
-    .product-img{
-        width:250px;
-    }
-    .bot-img{
-        display:flex;
-        position:absolute;
-        width:30%;
-        bottom:1.5%;
-        left:0px;
-    }
-    .title{
-        position:absolute;
-        width:70%;
-        bottom:1.5%;
-        right:0px;
-        backgroundColor:white;
-    }
-    `
     
     render() {
         return html`
-        <a class="backButton">Go Back </a>
+        <div class="content">
+        <button class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
+        </svg>
+        <p>Go back</p>
+        </button>
+        <h2 class="titleTop">Select the product to report</h2>
         <div class="cards-container "  >
         ${Object.entries(this.products).map(([key, item]) => html`
                 
@@ -135,6 +238,7 @@ export class pageProducts extends LitElement {
                 </div>
             </a>
         `)}
+        </div>
         </div>
         `;
         }

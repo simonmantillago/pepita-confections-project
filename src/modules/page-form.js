@@ -34,7 +34,6 @@ export class pageForm extends LitElement {
             justify-content: center;
             align-items: center;
             padding: 10px;
-            overflow-y:scroll;
         }
         .customerForm {
             width: 80%;
@@ -62,13 +61,13 @@ export class pageForm extends LitElement {
             <div class="container">
                 <form class="customerForm">
                     <div class="form__group field customerName">
-                        <label for="productQuantity" class="form__label">how Many</label>
+                        <label for="productQuantity" class="form__label">How many</label>
                         <input type="input" class="form__field" placeholder="How many products" required="" id="productQuantity" name="productQuantity">
                         <label for="defective" class="form__label">defective Products</label>
                         <input type="input" class="form__field" placeholder="defective Products" required="" id="defective" name="defective">
                     </div>
                     <div>
-                    <label for="generateHtml">¿Do you have employees?   </label>
+                    <label for="generateHtml">¿Do you have employees?</label>
                     <label><button id="addEmployee" type="button">+</button></label>
                     </div>
                     <div class="employeeForm"></div>
@@ -79,7 +78,7 @@ export class pageForm extends LitElement {
                     <div class="costForm"></div>
                     <div class="divButtons">
                         <button id="sendInfo" type="button">generate</button>
-                        <button id="backButton" type="button">Go back</button>
+                        <button id="backButton" type="button" class="back-button">Go back</button>
                     </div>
                 </form>
             </div>
@@ -230,9 +229,7 @@ export class pageForm extends LitElement {
             //
 
             const billPopUp = `<bill-pop-up></bill-pop-up>`;
-            const createPage = document.querySelector('page-new')
             this.parentNode.insertAdjacentHTML("beforeend", billPopUp);
-            this.parentNode.removeChild(createPage);
             this.parentNode.removeChild(this);
             
 
@@ -240,8 +237,10 @@ export class pageForm extends LitElement {
 
         })
 
-        const backButton = this.shadowRoot.querySelector('#backButton');
-        backButton.addEventListener('click', () => {
+        const backbutton = this.shadowRoot.querySelector(".back-button");
+        backbutton.addEventListener("click", () => {
+            const productsPage = `<page-new></page-new>`;
+            this.parentNode.insertAdjacentHTML("beforeend", productsPage);
             this.parentNode.removeChild(this);
         });
     }
