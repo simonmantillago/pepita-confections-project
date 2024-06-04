@@ -555,7 +555,7 @@ export class pageSearch extends LitElement {
         } else if (this.type === "Products"){
             return html`<p><strong>Name:</strong> ${item.name}<br><strong>Category: </strong> ${item.category}</p>`;
         } else {
-            return html`<p><strong>Quantity:</strong> ${item.quantity}<br><strong>Total of Employees:</strong> ${item.totalEmployees}</p><br><strong>Total of Indirect Costs:</strong> ${item.totalIndirect}</p><br><strong>Total of Products:</strong> ${item.Products}</p>`;
+            return html`<p><strong>Quantity:</strong> ${item.quantity}<br><strong>Total of Employees:</strong> ${item.totalEmployees}<br><strong>Total of Indirect Costs:</strong> ${item.totalIndirect}<br><strong>Total of Products:</strong> ${item.Products}<br><strong>Efectivity:</strong> ${item.Efectivity}</p>`;
         }
     }
 
