@@ -229,6 +229,10 @@ export class billPopUp extends LitElement{
             })
 
 
+
+            const pageIntro = `<principal-pages></principal-pages>`;
+            this.parentNode.insertAdjacentHTML("beforeend", pageIntro);
+            this.parentNode.removeChild(this);
         }
     
     

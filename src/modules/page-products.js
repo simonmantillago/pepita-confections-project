@@ -32,9 +32,14 @@ export class pageProducts extends LitElement {
             }
             })}
             this.nextpage()
-            
-
         }))
+        const backButton =this.shadowRoot.querySelector('.backButton')
+        backButton.addEventListener('click',()=>{
+            const generateComponent = `<principal-pages></principal-pages>`;
+            this.parentNode.insertAdjacentHTML("beforeend", generateComponent);
+            this.parentNode.removeChild(this);
+        })
+
     }
     async readProducts() {
         const response = await fetch('https://66560fd13c1d3b60293c1866.mockapi.io/Products');
@@ -95,16 +100,17 @@ export class pageProducts extends LitElement {
     
     render() {
         return html`
+        <a class="backButton">Go Back </a>
         <div class="cards-container "  >
         ${Object.entries(this.products).map(([key, item]) => html`
                 
             <a class="card" id="${key}" >
             <div>${item['name']}</div>
                 <div class="big-img">
-                <img style="background-color:${item['materialInfo']['telaColor']}" src=${item['image']} alt="picture">
+                <img style="background-color:${item['materialInfo']['fabricColor']}" src=${item['image']} alt="picture">
                 <div class="bot-img">
-                ${item['materialInfo']['hiloColor'] ? this.exist(item['materialInfo']['hiloColor'],'hilo'):this.noExist('hilo')}
-                ${item['materialInfo']['botonesColor'] ? this.exist(item['materialInfo']['botonesColor'],'botones'):this.noExist('botones')}
+                ${item['materialInfo']['threadColor'] ? this.exist(item['materialInfo']['threadColor'],'hilo'):this.noExist('hilo')}
+                ${item['materialInfo']['buttonsColor'] ? this.exist(item['materialInfo']['buttonsColor'],'botones'):this.noExist('botones')}
                 </div>
                 </div>
             </a>
