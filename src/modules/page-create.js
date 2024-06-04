@@ -178,6 +178,7 @@ export class pageCreate extends LitElement {
       gap: 15px;
       width: 100%;
     }
+
   }
 `;
   connectedCallback() {
@@ -203,10 +204,12 @@ export class pageCreate extends LitElement {
                     <select id="options" name="${key}">
                       ${item[1].map((element) => {
                         return html` <option>${element}</option> `;
+
                       })}
                     </select>
                   </div>
                 `;
+
               } else {
                 return html`
                 <div class="${key}">
@@ -230,6 +233,8 @@ export class pageCreate extends LitElement {
           </button>
         </div>
       </div>
+
+
     `;
   }
 
@@ -245,67 +250,96 @@ export class pageCreate extends LitElement {
       this.parentNode.removeChild(this);
     });
 
-    const submmitButton = this.shadowRoot.querySelector(".submmit");
-    submmitButton.addEventListener("click", async (event) => {
-      const container = this.shadowRoot.querySelector(".form-container");
-      const data = Object.fromEntries(new FormData(container).entries());
-      const inputData = JSON.parse(JSON.stringify(data));
-      if (this.type == "Inventory") {
-        const {
-          tag,
-          name,
-          description,
-          category,
-          suplier,
-          price,
-          unit,
-          stock,
-          buydate,
-          duedate,
-          ubication,
-          notes,
-          color,
-        } = inputData;
-        this.Submit = {
-          tag: tag,
-          name: name,
-          description: description,
-          category: category,
-          suplier: suplier,
-          price: price,
-          unit: unit,
-          stock: stock,
-          adate: buydate,
-          ddate: duedate,
-          ubication: ubication,
-          notes: notes,
-          color: color,
-        };
-      } else if (this.type === "Products") {
-        const { tag, time, image, name, ...materials } = inputData;
-        const imgUrl = `../../public/imgs/${image}.png`;
-        this.Submit = {
-          name: name,
-          tag: tag,
-          time: time,
-          image: imgUrl,
-          materialInfo: materials,
-        };
-      }
-      try {
-        const response = await fetch(
-          `https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.Submit),
-          }
-        );
 
-        if (!response.ok) {
-          throw new Error("Error al enviar POST al MockAPI");
+        const backbutton = this.shadowRoot.querySelector(".back-button");
+        backbutton.addEventListener("click", () => {
+            const principalPage = `<principal-pages></principal-pages>`;
+            this.parentNode.insertAdjacentHTML("beforeend", principalPage);
+            this.parentNode.removeChild(this);
+        });
+
+        const submmitButton = this.shadowRoot.querySelector(".submmit");
+        submmitButton.addEventListener("click", async (event) => {
+            const container = this.shadowRoot.querySelector(".form-container");
+            const data = Object.fromEntries(new FormData(container).entries());
+            const inputData = JSON.parse(JSON.stringify(data));
+            if (this.type == "Inventory") {
+                const {
+                    tag,
+                    name,
+                    description,
+                    category,
+                    suplier,
+                    price,
+                    unit,
+                    stock,
+                    buydate,
+                    duedate,
+                    ubication,
+                    notes,
+                    color,
+                } = inputData;
+                this.Submit = {
+                    tag: tag,
+                    name: name,
+                    description: description,
+                    category: category,
+                    suplier: suplier,
+                    price: price,
+                    unit: unit,
+                    stock: stock,
+                    adate: buydate,
+                    ddate: duedate,
+                    ubication: ubication,
+                    notes: notes,
+                    color: color,
+                };
+            } else if (this.type === "Products") {
+                const { tag, image, name, ...materials } = inputData;
+                const imgUrl = `/imgs/${image}.png`;
+                this.Submit = {
+                    name: name,
+                    tag: tag,
+                    image: imgUrl,
+                    materialInfo: materials,
+                };
+            }
+            try {
+                const response = await fetch(
+                    `https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(this.Submit),
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Error al enviar POST al MockAPI");
+                }
+
+                const responseData = await response.json();
+                console.log("Respuesta de la API:", responseData);
+            } catch (error) {
+                console.error("Error al enviar POST a la API:", error);
+            }
+
+            container.reset() 
+        });
+    }
+    async findData() {
+        try {
+            const response = await fetch(
+                `https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`
+            );
+            this.materials = await response.json();
+            this.isReady = true;
+            this.requestUpdate(); // Trigger a re-render to display materials
+        } catch (error) {
+            console.error("Error fetching materials:", error);
+
         }
 
         const responseData = await response.json();
@@ -351,13 +385,46 @@ export class pageCreate extends LitElement {
     `;
   }
 
-  renderMaterials(materialType) {
-    if (this.isReady) {
-      return this.materials.map((material) => {
-        if (material["category"] === materialType) {
-          return html`<option materialColor="${material["color"]}" unit="${material["unit"]}" >
-            ${material["tag"]}
-          </option>`;
+
+        renderMaterials(materialType) {
+            if (this.isReady) {
+                return this.materials.map(material => {
+                    if (material['category'] === materialType) {
+                        return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
+                    }
+                });
+            }
+            return html``;
+        }
+                            
+        materialSelected(event, material){
+            const isNA = event.target.value
+            const selectedMaterial = event.target;
+            const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
+            const unit = selectedOption.getAttribute('unit');
+            const color = selectedOption.getAttribute('materialColor');
+            const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
+            const materialColor = this.shadowRoot.querySelector(`.${material}color`)
+            const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
+            if(isNA==="N/A"){
+                cuantityInput.disabled=true
+                materialColor.disabled=true
+                materialUnit.disabled=true
+                materialUnit.value= ""
+                cuantityInput.value= ""
+                materialColor.value =""
+                materialColor.style.backgroundColor="transparent"
+                
+            }else{
+                cuantityInput.disabled=false
+                materialColor.disabled=false
+                materialUnit.disabled=false
+                materialUnit.setAttribute("readonly", "readonly")
+                materialColor.setAttribute("readonly", "readonly")
+                materialUnit.value= unit
+                materialColor.value =color
+                materialColor.style.color=(color)
+                materialColor.style.backgroundColor=(color)}
         }
       });
     }
