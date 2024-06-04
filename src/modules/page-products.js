@@ -96,6 +96,26 @@ export class pageProducts extends LitElement {
         display:inline-block;
         width:250px;
     }
+    .big-img{
+        position:relative;
+    }
+    .product-img{
+        width:250px;
+    }
+    .bot-img{
+        display:flex;
+        position:absolute;
+        width:30%;
+        bottom:1.5%;
+        left:0px;
+    }
+    .title{
+        position:absolute;
+        width:70%;
+        bottom:1.5%;
+        right:0px;
+        backgroundColor:white;
+    }
     `
     
     render() {
@@ -105,9 +125,9 @@ export class pageProducts extends LitElement {
         ${Object.entries(this.products).map(([key, item]) => html`
                 
             <a class="card" id="${key}" >
-            <div>${item['name']}</div>
-                <div class="big-img">
-                <img style="background-color:${item['materialInfo']['fabricColor']}" src=${item['image']} alt="picture">
+            <div class="big-img">
+                <div class="title">${item['name']}</div>
+                <img class="product-img" style="background-color:${item['materialInfo']['fabricColor']}" src=${item['image']} alt="picture">
                 <div class="bot-img">
                 ${item['materialInfo']['threadColor'] ? this.exist(item['materialInfo']['threadColor'],'hilo'):this.noExist('hilo')}
                 ${item['materialInfo']['buttonsColor'] ? this.exist(item['materialInfo']['buttonsColor'],'botones'):this.noExist('botones')}
