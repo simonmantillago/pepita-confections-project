@@ -12,6 +12,8 @@ export class billPopUp extends LitElement{
         .button-container {
             gap: 1em;
             margin: 2em;
+            display:flex;
+            
         }
     
         .back-button {
@@ -143,9 +145,80 @@ export class billPopUp extends LitElement{
         .materials{
             font-size:8px;
         }
+        .print-btn {
+            width: 100px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(0, 123, 255);
+            border: 1px solid rgb(0, 123, 255);
+            border-radius: 10px;
+            gap: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            overflow: hidden;
+            font-weight: 500;
+            box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.065);
+            transition: all 0.3s;
+            color:white;
+          }
+          .printer-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 100%;
+          }
+          .printer-container {
+            height: 50%;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+          }
+          
+          .printer-container svg {
+            width: 100%;
+            height: auto;
+            transform: translateY(4px);
+          }
+          .printer-page-wrapper {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+          }
+          .printer-page {
+            width: 70%;
+            height: 10px;
+            border: 1px solid white;
+            background-color: white;
+            transform: translateY(0px);
+            transition: all 0.3s;
+            transform-origin: top;
+          }
+          .print-btn:hover .printer-page {
+            height: 16px;
+          }
+          
+          .print-btn:hover {
+            background-color: #018bff;
+          }
+          .titlesDiv{
+            display:flex;
+            flex-direction:column;
+          }
+          
         @media (min-width: 600px) {
             .materials{
                 font-size:15px;
+            }
+            .titlesDiv{
+                flex-direction:row;
+                justify-content:space-between;
             }
         }
     `
@@ -170,14 +243,13 @@ export class billPopUp extends LitElement{
         </div>
         <div class="grande">
             
-            <div>
+            <div class="titlesDiv">
                 <h3>Bill ID: ${this.billInfo['tag']}</h3>
+                <h3>Productos a fabricar: ${this.billInfo['quantity']}</h3>
                 
             </div>
             
-            <div>
-                <h3>Productos a fabricar: ${this.billInfo['quantity']}</h3>
-            </div>
+            
             
             <h2>Material's Info</h2>
             <div class="materials"> 
@@ -210,7 +282,36 @@ export class billPopUp extends LitElement{
         </div>
         <div class="button-container">
             <button class="submit" disabled>Sent to data base</button>
-            <a @click="${(event) => print()}"> Imprimir</a>
+            <button class="print-btn" @click="${() => print()}">
+                <span class="printer-wrapper">
+                <span class="printer-container">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 92 75">
+            <path
+          stroke-width="5"
+          stroke="white"
+          d="M12 37.5H80C85.2467 37.5 89.5 41.7533 89.5 47V69C89.5 70.933 87.933 72.5 86 72.5H6C4.067 72.5 2.5 70.933 2.5 69V47C2.5 41.7533 6.75329 37.5 12 37.5Z"
+        ></path>
+        <mask fill="white" id="path-2-inside-1_30_7">
+          <path
+            d="M12 12C12 5.37258 17.3726 0 24 0H57C70.2548 0 81 10.7452 81 24V29H12V12Z"
+          ></path>
+        </mask>
+        <path
+          mask="url(#path-2-inside-1_30_7)"
+          fill="white"
+          d="M7 12C7 2.61116 14.6112 -5 24 -5H57C73.0163 -5 86 7.98374 86 24H76C76 13.5066 67.4934 5 57 5H24C20.134 5 17 8.13401 17 12H7ZM81 29H12H81ZM7 29V12C7 2.61116 14.6112 -5 24 -5V5C20.134 5 17 8.13401 17 12V29H7ZM57 -5C73.0163 -5 86 7.98374 86 24V29H76V24C76 13.5066 67.4934 5 57 5V-5Z"
+        ></path>
+        <circle fill="white" r="3" cy="49" cx="78"></circle>
+      </svg>
+    </span>
+
+    <span class="printer-page-wrapper">
+      <span class="printer-page"></span>
+    </span>
+  </span>
+  Print
+</button>
+
         </div>
         `
     }

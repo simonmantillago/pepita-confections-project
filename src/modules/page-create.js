@@ -220,7 +220,7 @@ connectedCallback() {
                 </div>
                 </div>
               `;
-              }
+              }9
             }
           )}
           ${this.type === "Products" ? this.newhtml() : ""}
@@ -320,8 +320,7 @@ connectedCallback() {
         };
       }
       try {
-        const response = await fetch(
-          `https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`,
+        const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`,
           {
             method: "POST",
             headers: {
