@@ -210,6 +210,7 @@ export class billPopUp extends LitElement{
         </div>
         <div class="button-container">
             <button class="submit" disabled>Sent to data base</button>
+            <a @click="${(event) => print()}"> Imprimir</a>
         </div>
         `
     }
