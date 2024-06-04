@@ -154,7 +154,7 @@ export class billPopUp extends LitElement{
         super.connectedCallback();
         const formPage = document.querySelector('page-form');
         this.billInfo = formPage.report;
-        this.notes=formPage.notes
+        this.notes=this.billInfo['notes']
         this.inventory=formPage.inventory
         
     }

@@ -224,7 +224,8 @@ export class pageForm extends LitElement {
                 totalIndirect:indirectCostTotalPrice,
                 totalProducts: materialsPriceTotal,
                 totalPrice: this.total,
-                efectivity:efectivity,// precio total de todo
+                efectivity:efectivity,
+                notes:this.notes// precio total de todo
             }
             //
 
