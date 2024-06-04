@@ -21,7 +21,7 @@
         "create": {
             "tag": ["input","Tag"],
             "name": ["input","Name of the product"],
-            "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]]
+            "image":["Kind", ["T-shirt","Pants","Skirt","Dress","Shorts","Shirt"]]
         }
     }
 }
