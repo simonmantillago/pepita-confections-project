@@ -206,12 +206,13 @@ export class pageForm extends LitElement {
             console.log(`indirectcostterniario ${indirectCostTotalPrice}`)
             let materialsPriceTotal=this.materialsPrice*productQuantity
             this.total=materialsPriceTotal+indirectCostTotalPrice+employeesTotal
-            
-            
+            let tag= Date.now().toString(16)
+        
             
             ;
             console.log(this.productAvailability)
             this.report={
+                tag:tag,
                 quantity:productQuantity,//cuantos productos
                 product:this.productAvailability,//  info de el producto, materiales y coostos por materiial
                 indirectCost:indirectCostData, // info costos indirecctos, nombre y precio por mes

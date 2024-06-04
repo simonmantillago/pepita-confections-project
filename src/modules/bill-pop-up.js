@@ -15,6 +15,11 @@ export class billPopUp extends LitElement{
         <div>
             <hr>
             <div>
+            <h3>Bill ID: ${this.billInfo['tag']}</h3>
+                
+            </div>
+            <hr>
+            <div>
             <h3>Productos a fabricar: ${this.billInfo['quantity']}</h3>
                 
             </div>
