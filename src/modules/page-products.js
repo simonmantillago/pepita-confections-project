@@ -26,10 +26,13 @@ export class pageProducts extends LitElement {
     }
     .title{
         position:absolute;
-        width:70%;
+        width:max-content%;
+        height:max-content;
         bottom:1.5%;
-        right:0px;
-        backgroundColor:white;
+        top:-22px;
+        left:10px;
+        font-weight:bold;
+        color:white;
     }
     .back-button {
         padding: 0;
@@ -83,6 +86,12 @@ export class pageProducts extends LitElement {
       .back-button:hover p::before {
         width: 100%;
       }
+      .ropa{
+        display:flex;
+        justify-content:center;
+        aling-items:center;
+        height:40vh;
+      }
     
       .back-button:hover svg {
         transform: translateX(-4px);
@@ -98,6 +107,7 @@ export class pageProducts extends LitElement {
       }
       .content{
         padding:20px;
+
       }
       .titleTop{
         font-size: 2em;
@@ -111,7 +121,8 @@ export class pageProducts extends LitElement {
     }
     .cards-container{
         display: flex;
-        flex-direction: column;
+        justify-content:center;
+        flex-wrap:wrap;
         align-items: center;
         gap: 50px;
     }
@@ -125,6 +136,12 @@ export class pageProducts extends LitElement {
     .product-img{
         border-radius:20px;
     }
+    @media (min-width: 600px) {
+        .titleTop {
+            font-size: 4vw;
+        }
+    
+      }
     
     `
 
@@ -230,7 +247,9 @@ export class pageProducts extends LitElement {
             <a class="card" id="${key}" >
             <div class="big-img">
                 <div class="title">${item['name']}</div>
+                <div class="ropa">
                 <img class="product-img" style="background-color:${item['materialInfo']['fabricColor']}" src=${item['image']} alt="picture">
+                </div>
                 <div class="bot-img">
                 ${item['materialInfo']['threadColor'] ? this.exist(item['materialInfo']['threadColor'],'hilo'):this.noExist('hilo')}
                 ${item['materialInfo']['buttonsColor'] ? this.exist(item['materialInfo']['buttonsColor'],'botones'):this.noExist('botones')}
