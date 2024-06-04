@@ -15,13 +15,23 @@ export class billPopUp extends LitElement{
         <div>
             <hr>
             <div>
+            <h3>Bill ID: ${this.billInfo['tag']}</h3>
+                
+            </div>
+            <hr>
+            <div>
             <h3>Productos a fabricar: ${this.billInfo['quantity']}</h3>
                 
             </div>
             <hr>
             <h2>Material's Info</h2>
-            <div class="materials">
-            ${this.ShowMaterials()}
+            <div class="materials"> 
+            ${this.ShowMaterials()} 
+            </div>
+            <hr>
+            <h2>Efective Percent</h2>
+            <div class="efective"> 
+            ${this.ShowEfective()}  
             </div>
             <hr>
             <h2>employees's Info</h2>
@@ -165,6 +175,24 @@ export class billPopUp extends LitElement{
             <h3>Ready to Upload</h3>
             `
         }
+    }
+    ShowEfective(){
+            return html`
+                    <table> 
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Defective</th>
+                            <th>efficiency</th>
+                        </tr>
+                        <tr>
+                            <td>${this.billInfo['quantity']}</td>
+                            <td>${this.billInfo['defectiveProducts']}</td>
+                            <td>${this.billInfo['efectivity']}</td>
+                        
+                        </tr>
+                    </table>
+                
+                `
     }
     isNote(){
         const sentButton = this.shadowRoot.querySelector(".Send");

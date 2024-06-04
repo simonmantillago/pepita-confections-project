@@ -591,8 +591,7 @@ export class pageSearch extends LitElement {
         </div>
         <div class="editSection">
         <label for="notes">Notes</label> <input type="text" name="notes" .value="${this.editItem.notes}" @input="${e => this.handleInputChange(e, 'edit')}">
-        </div>  
-           
+        </div> 
         `;
     }
 

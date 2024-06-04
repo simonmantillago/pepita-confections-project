@@ -63,6 +63,8 @@ export class pageForm extends LitElement {
                     <div class="form__group field customerName">
                         <label for="productQuantity" class="form__label">How many</label>
                         <input type="input" class="form__field" placeholder="How many products" required="" id="productQuantity" name="productQuantity">
+                        <label for="defective" class="form__label">defective Products</label>
+                        <input type="input" class="form__field" placeholder="defective Products" required="" id="defective" name="defective">
                     </div>
                     <div>
                     <label for="generateHtml">¿Do you have employees?</label>
@@ -153,7 +155,7 @@ export class pageForm extends LitElement {
             const container = this.shadowRoot.querySelector(".customerForm");
             const data = Object.fromEntries(new FormData(container).entries());
             const inputData = JSON.parse(JSON.stringify(data));
-            const {Salary,productQuantity,...rest}=inputData
+            const {Salary,productQuantity,defective,...rest}=inputData
             console.log(rest)
             const indirectCostData={}
             const employeesData={}
@@ -205,12 +207,14 @@ export class pageForm extends LitElement {
             console.log(`indirectcostterniario ${indirectCostTotalPrice}`)
             let materialsPriceTotal=this.materialsPrice*productQuantity
             this.total=materialsPriceTotal+indirectCostTotalPrice+employeesTotal
-            
-            
+            let tag= Date.now().toString(16)
+            let efectivity= `${(((productQuantity)-(defective))/(productQuantity))*100}%`
             
             ;
             console.log(this.productAvailability)
             this.report={
+                tag:tag,
+                defectiveProducts:defective,//productos defectuosos
                 quantity:productQuantity,//cuantos productos
                 product:this.productAvailability,//  info de el producto, materiales y coostos por materiial
                 indirectCost:indirectCostData, // info costos indirecctos, nombre y precio por mes
@@ -219,7 +223,8 @@ export class pageForm extends LitElement {
                 totalHours:hoursTotal,
                 totalIndirect:indirectCostTotalPrice,
                 totalProducts: materialsPriceTotal,
-                totalPrice: this.total,// precio total de todo
+                totalPrice: this.total,
+                efectivity:efectivity,// precio total de todo
             }
             //
 

@@ -269,6 +269,7 @@ connectedCallback() {
       this.parentNode.insertAdjacentHTML("beforeend", principalPage);
       this.parentNode.removeChild(this);
     });
+
   
     const submmitButton = this.shadowRoot.querySelector(".submit");
     submmitButton.addEventListener("click", async (event) => {
