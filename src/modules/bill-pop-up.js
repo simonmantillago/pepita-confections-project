@@ -350,7 +350,7 @@ export class billPopUp extends LitElement{
                 `
     }
     isNote(){
-        const sentButton = this.shadowRoot.querySelector(".Send");
+        const sentButton = this.shadowRoot.querySelector(".submit");
         if (sentButton) {
             // Now you can access and manipulate the button
             if ((this.notes).length >= 1){

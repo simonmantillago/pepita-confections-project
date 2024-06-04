@@ -122,7 +122,7 @@ export class pageCreate extends LitElement {
     justify-content: center;
     gap: 20px;
     padding: 20px;
-    height:90vh;
+    
   }
 
   .title-create {
