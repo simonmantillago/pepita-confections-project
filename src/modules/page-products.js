@@ -158,7 +158,7 @@ export class pageProducts extends LitElement {
             })}
             this.nextpage()
         }))
-        const backButton =this.shadowRoot.querySelector('.backButton')
+        const backButton =this.shadowRoot.querySelector('.back-button')
         backButton.addEventListener('click',()=>{
             const generateComponent = `<principal-pages></principal-pages>`;
             this.parentNode.insertAdjacentHTML("beforeend", generateComponent);
@@ -211,8 +211,8 @@ export class pageProducts extends LitElement {
     nextpage(){
         const formpage='<page-form></page-form>';
         this.parentNode.insertAdjacentHTML('beforeend',formpage);
+        this.parentNode.removeChild(this);
     }
-
     
     render() {
         return html`

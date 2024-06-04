@@ -76,7 +76,7 @@ export class pageForm extends LitElement {
                     <div class="costForm"></div>
                     <div class="divButtons">
                         <button id="sendInfo" type="button">generate</button>
-                        <button id="backButton" type="button">Go back</button>
+                        <button id="backButton" type="button" class="back-button">Go back</button>
                     </div>
                 </form>
             </div>
@@ -224,9 +224,7 @@ export class pageForm extends LitElement {
             //
 
             const billPopUp = `<bill-pop-up></bill-pop-up>`;
-            const createPage = document.querySelector('page-new')
             this.parentNode.insertAdjacentHTML("beforeend", billPopUp);
-            this.parentNode.removeChild(createPage);
             this.parentNode.removeChild(this);
             
 
@@ -234,8 +232,10 @@ export class pageForm extends LitElement {
 
         })
 
-        const backButton = this.shadowRoot.querySelector('#backButton');
-        backButton.addEventListener('click', () => {
+        const backbutton = this.shadowRoot.querySelector(".back-button");
+        backbutton.addEventListener("click", () => {
+            const productsPage = `<page-new></page-new>`;
+            this.parentNode.insertAdjacentHTML("beforeend", productsPage);
             this.parentNode.removeChild(this);
         });
     }
