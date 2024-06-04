@@ -53,32 +53,267 @@ export class pageForm extends LitElement {
             top: 0vh;
             backdrop-filter: blur(5px);
             z-index: 1;
-        }`
+        }
+        
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+        
+        .form__group {
+            display: flex;
+            flex-direction: row;
+            gap:1em;
+        }
+
+        .employeeForm, .costForm{
+            display:flex;
+            flex-direction:column;
+            gap: .5em;
+        }
+    
+        .form-container label {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 5px;
+            text-transform: capitalize;
+        }
+    
+        .form-container input, .form-container select {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width:max-content;
+        }
+    
+        .form-container input:focus, .form-container select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .cost{
+            display:flex;
+            flex-direction:row;
+            gap: 1em;
+        }
+
+
+        .button-85 {
+            padding: 0.6em 1em;
+            border: none;
+            outline: none;
+            color: rgb(255, 255, 255);
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .button-85:before {
+            content: "";
+            background: linear-gradient(
+                45deg,
+                #ff0000,
+                #ff7300,
+                #fffb00,
+                #48ff00,
+                #00ffd5,
+                #002bff,
+                #7a00ff,
+                #ff00c8,
+                #ff0000
+            );
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing-button-85 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing-button-85 {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 400% 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        .divButtons{
+            display:flex;
+            gap:1em;
+        }
+
+        .button-85:after {
+            z-index: -1;
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #222;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .back-button {
+            padding: 0;
+            color:#fff;
+            margin: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            --primary-color: #ffff;
+            --hovered-color: #ffff;
+            position: relative;
+            display: flex;
+            font-weight: 600;
+            font-size: 20px;
+            gap: 0.5rem;
+            align-items: center;
+            
+        }
+        
+        .back-button p {
+            margin: 0;
+            position: relative;
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+        
+        .back-button::after {
+            position: absolute;
+            content: "";
+            width: 0;
+            right: 0;
+            bottom: -7px;
+            background: var(--hovered-color);
+            height: 2px;
+            transition: 0.3s ease-out;
+        }
+        
+        .back-button p::before {
+            position: absolute;
+            content: "Go back";
+            width: 0%;
+            inset: 0;
+            color: var(--hovered-color);
+            overflow: hidden;
+        }
+        
+        .back-button:hover::after {
+            width: 100%;
+            left: auto;
+            right: 0;
+        }
+        
+        .back-button:hover p::before {
+            width: 100%;
+        }
+        
+        .back-button:hover svg {
+            transform: translateX(-4px);
+            color: var(--hovered-color);
+        }
+        
+        .back-button svg {
+            color: var(--primary-color);
+            transition: 0.2s;
+            position: relative;
+            width: 15px;
+            transition-delay: 0.2s;
+        }
+        
+        .back-button-container {
+            align-self: center;
+        }
+        .submit {
+            position: relative;
+            background-color: #007bff !important;
+            border-radius: 5px;
+            box-shadow: #012bff 0px 4px 0px 0px;
+            padding: 15px;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            box-sizing: border-box;
+            width: 200px;
+            height: 49px;
+            color: #fff;
+            border: none;
+            font-size: 20px;
+            transition: all 0.3s ease-in-out;
+            z-index: 1;
+        
+        }
+    
+        .submit::before {
+            content: "";
+            background-color: #018bff !important;
+            width: 0;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            transition: width 700ms ease-in-out;
+            display: inline-block;
+        }
+    
+        .submit:hover::before {
+            width: 100%;
+        }
+    `
 
     render(){
         return html`
         <div class="big-container">
             <div class="container">
-                <form class="customerForm">
+                <form class="form-container customerForm">
                     <div class="form__group field customerName">
                         <label for="productQuantity" class="form__label">How many</label>
                         <input type="input" class="form__field" placeholder="How many products" required="" id="productQuantity" name="productQuantity">
                         <label for="defective" class="form__label">defective Products</label>
-                        <input type="input" class="form__field" placeholder="defective Products" required="" id="defective" name="defective">
+                        <input type="input" class="form__field" placeholder="Defective Products" required="" id="defective" name="defective">
                     </div>
                     <div>
-                    <label for="generateHtml">¿Do you have employees?</label>
-                    <label><button id="addEmployee" type="button">+</button></label>
+                        <label for="generateHtml">¿Do you have employees?</label>
+                        <button role="button" class="button-85" id="addEmployee" type="button">+</button>
                     </div>
                     <div class="employeeForm"></div>
                     <div>
-                        <label for="generateHtml">¿Do you have indirect cost?   </label>
-                        <label><button id="generateCost" type="button">+</button></label>
+                        <label for="generateHtml">¿Do you have indirect cost?</label>
+                        <button role="button" class="button-85" id="generateCost" type="button">+</button>
                     </div>
                     <div class="costForm"></div>
                     <div class="divButtons">
-                        <button id="sendInfo" type="button">generate</button>
-                        <button id="backButton" type="button" class="back-button">Go back</button>
+                        <button class="back-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
+                            </svg>
+                            <p>Go back</p>
+                        </button>
+                    <button class="submit" id="sendInfo" type="button">Generate</button>
                     </div>
                 </form>
             </div>
@@ -105,7 +340,7 @@ export class pageForm extends LitElement {
                     <input type="text" class="form-control" name="newkey${idCost}" id="newKey">
                     <label for="newValue" class="form-label">Cost per month</label>
                     <input type="number" class="form-control" name="newValue${idCost}" id="newValue">
-                    <button type="button" class="removeCost">-</button>
+                    <button role="button" class="button-85 removeCost" id="generateCost" type="button">-</button>
                 </div>
                 
             `;
@@ -136,7 +371,7 @@ export class pageForm extends LitElement {
                     <input type="text" class="form-control" placeholder="Name" name="keyEmployee${idEmployee}" id="newKey">
                     <input type="number" class="form-control" placeholder="Salary per hour" name="ValueEmployee${idEmployee}" id="newValue">
                     <input type="number" class="form-control" placeholder="Hours" name="hoursEmployee${idEmployee}" id="newValue">
-                    <button type="button" class="removeEmployee">-</button>
+                    <button role="button" class="button-85 removeEmployee" id="generateCost" type="button">-</button>
                 </div>
                 
             `;
