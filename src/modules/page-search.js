@@ -430,8 +430,8 @@ export class pageSearch extends LitElement {
         }
 
         try {
-          if (this.type === "Reports"){
-            const response = await fetch(`https://665ce299e88051d60404f656.mockapi.io/Reports/${this.type}/${this.editItem.id}`, {
+          
+            const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}/${this.editItem.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },  // Establece el encabezado de tipo de contenido
                 body: JSON.stringify(updatedItem)  // Convierte el objeto a JSON y lo envía en el cuerpo de la solicitud
@@ -441,7 +441,7 @@ export class pageSearch extends LitElement {
             this.data = this.data.map(item => item.id === this.editItem.id ? updatedResponse : item);
             this.editItem = null;  // Limpia el elemento en edición
             this.requestUpdate();  // Solicita una actualización del componente
-          }
+          
         } catch (error) {
             console.error('Error updating item:', error);  // Muestra un error en caso de fallo
         }
@@ -554,7 +554,7 @@ export class pageSearch extends LitElement {
         if (this.type === 'Inventory') {
             return html`<p><strong>Name:</strong> ${item.name}<br><strong>Stock:</strong> ${item.stock}</p>`;
         } else if (this.type === "Products"){
-            return html`<p><strong>Quantity:</strong> ${item.materialInfo.telaCuantity}<br><strong>Time:</strong> ${item.time}</p>`;
+            return html`<p><strong>Name:</strong> ${item.name}<br><strong>Category: </strong> ${item.category}</p>`;
         } else {
             return html`<p><strong>Quantity:</strong> ${item.quantity}<br><strong>Total of Employees:</strong> ${item.totalEmployees}</p><br><strong>Total of Indirect Costs:</strong> ${item.totalIndirect}</p><br><strong>Total of Products:</strong> ${item.Products}</p>`;
         }

@@ -315,6 +315,7 @@ connectedCallback() {
           tag: tag,
           image: imgUrl,
           materialInfo: materials,
+          category:image
         };
       }
       try {
