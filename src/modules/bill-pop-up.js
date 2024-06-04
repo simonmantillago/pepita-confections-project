@@ -25,8 +25,11 @@ export class billPopUp extends LitElement{
             </div>
             <hr>
             <h2>Material's Info</h2>
-            <div class="materials">
-            ${this.ShowMaterials()}
+            <div class="materials"> 
+            ${this.ShowEfective()} 
+            </div>
+            <div class="materials"> 
+            ${this.ShowMaterials()} 
             </div>
             <hr>
             <h2>employees's Info</h2>
@@ -170,6 +173,15 @@ export class billPopUp extends LitElement{
             <h3>Ready to Upload</h3>
             `
         }
+    }
+    ShowEfective(){
+            return html`
+                    <h2>Efective Percent</h2>
+                    <div>${this.billInfo['quantity']}</div>
+                    <div>${this.billInfo['defectiveProducts']}</div>
+                    <div>The efficiency is: ${this.billInfo['efectivity']}</div>
+                
+                `
     }
     isNote(){
         const sentButton = this.shadowRoot.querySelector(".Send");

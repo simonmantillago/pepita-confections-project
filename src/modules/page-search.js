@@ -373,7 +373,6 @@ export class pageSearch extends LitElement {
             <label>Stock: <input type="text" name="stock" .value="${this.editItem.stock}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Ubication: <input type="text" name="ubication" .value="${this.editItem.ubication}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Notes: <input type="text" name="notes" .value="${this.editItem.notes}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-           
         `;
     }
 
