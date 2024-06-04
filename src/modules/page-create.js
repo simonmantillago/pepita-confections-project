@@ -77,6 +77,7 @@ export class pageCreate extends LitElement {
           )}
           <div>${this.type === "Products" ? this.newhtml() : ""}</div>
           </form>
+
         </div>
       <a class="back-button">← Go back</a>
       <a class="submmit">Submit</a>
@@ -162,6 +163,8 @@ export class pageCreate extends LitElement {
             } catch (error) {
                 console.error("Error al enviar POST a la API:", error);
             }
+
+            container.reset() 
         });
     }
     async findData() {
