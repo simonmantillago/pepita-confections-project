@@ -122,6 +122,78 @@ export class pageSearch extends LitElement {
       .buttons-container{
         display:flex;
       }
+      .back-button {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        --primary-color: #ffff;
+        --hovered-color: #ffff;
+        position: relative;
+        display: flex;
+        font-weight: 600;
+        font-size: 20px;
+        gap: 0.5rem;
+        align-items: center;
+      }
+    
+      .back-button p {
+        margin: 0;
+        position: relative;
+        font-size: 20px;
+        color: var(--primary-color);
+      }
+    
+      .back-button::after {
+        position: absolute;
+        content: "";
+        width: 0;
+        right: 0;
+        bottom: -7px;
+        background: var(--hovered-color);
+        height: 2px;
+        transition: 0.3s ease-out;
+      }
+    
+      .back-button p::before {
+        position: absolute;
+        content: "Go back";
+        width: 0%;
+        inset: 0;
+        color: var(--hovered-color);
+        overflow: hidden;
+      }
+    
+      .back-button:hover::after {
+        width: 100%;
+        left: auto;
+        right: 0;
+      }
+    
+      .back-button:hover p::before {
+        width: 100%;
+      }
+    
+      .back-button:hover svg {
+        transform: translateX(-4px);
+        color: var(--hovered-color);
+      }
+    
+      .back-button svg {
+        color: var(--primary-color);
+        transition: 0.2s;
+        position: relative;
+        width: 15px;
+        transition-delay: 0.2s;
+      }
+    
+      .back-button-container {
+        align-self: center;
+      }
+      .container{
+        padding:20px;
+      }
     `;
     static get properties() {
         return {
@@ -167,6 +239,7 @@ export class pageSearch extends LitElement {
             delete updatedItem.image;
             delete updatedItem.category;
             delete updatedItem.unit;
+            delete updatedItem.color;
         } else {
             // Mantén solo los campos permitidos para Product
             updatedItem = {
@@ -236,8 +309,13 @@ export class pageSearch extends LitElement {
 
     render() {
         return html`
-        <div>
-        <a class="back-button">← Go back</a>
+        <div class='container'>
+        <button class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
+            </svg>
+            <p>Go back</p>
+          </button>
             <div class="search-bar">
                 <label for="searcher"><h2>Type the ${this.type}'s id you're looking for!</h2></label>
                 <input type="text" id="searcher" @input="${e => this.handleInputChange(e, 'search')}">  
@@ -295,14 +373,13 @@ export class pageSearch extends LitElement {
             <label>Stock: <input type="text" name="stock" .value="${this.editItem.stock}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Ubication: <input type="text" name="ubication" .value="${this.editItem.ubication}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             <label>Notes: <input type="text" name="notes" .value="${this.editItem.notes}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Color: <input type="color" name="color" .value="${this.editItem.color}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
+           
         `;
     }
 
     renderProductEditForm() {
         return html`
             <label>Name: <input type="text" name="name" .value="${this.editItem.name}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
-            <label>Time: <input type="text" name="time" .value="${this.editItem.time}" @input="${e => this.handleInputChange(e, 'edit')}"></label>
             
         `;
     }
