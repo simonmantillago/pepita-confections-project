@@ -4,7 +4,7 @@
             "tag": ["input","Tag"],
             "name": ["input","Name"],
             "description": ["input","Description"],
-            "category":["Category", ["tela","hilo","botones","zips"]],
+            "category":["Category", ["fabric","thread","buttons","other"]],
             "suplier": ["input","Suplier"],
             "price": ["number","Price"],
             "unit": ["Unit of medition",["m","cm","roll","box","kg"]],
@@ -21,7 +21,6 @@
         "create": {
             "tag": ["input","Tag"],
             "name": ["input","Name of the product"],
-            "time": ["number","How many hours it take"],
             "image":["Kind", ["T-shirt","Pants","Skirt","Dress"]]
         }
     }

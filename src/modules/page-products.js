@@ -8,6 +8,8 @@ export class pageProducts extends LitElement {
         this.products={}
         this.inventory={}
         this.price=0
+        this.productSelected={}
+        this.availability={}
 
     }
     static properties = {
@@ -19,9 +21,9 @@ export class pageProducts extends LitElement {
         const cardContainer=this.shadowRoot.querySelector('.cards-container')
         cardContainer.addEventListener('click',(event=>{
             const product=event.target.closest('.card')
-            const productSelected=this.products[product.id]
-            const SelectedMaterials=productSelected['materialInfo']
-            console.log(SelectedMaterials)
+            this.productSelected=this.products[product.id]
+            const SelectedMaterials=this.productSelected['materialInfo']
+            this.price=0
             if (SelectedMaterials){
             (data['Inventory']['create']['category'][1]).map(element => {
                 let sum=this.catchMaterials(element,SelectedMaterials)
@@ -29,11 +31,15 @@ export class pageProducts extends LitElement {
                 this.price+=sum
             }
             })}
-
-            console.log(this.price)
-            
-
+            this.nextpage()
         }))
+        const backButton =this.shadowRoot.querySelector('.backButton')
+        backButton.addEventListener('click',()=>{
+            const generateComponent = `<principal-pages></principal-pages>`;
+            this.parentNode.insertAdjacentHTML("beforeend", generateComponent);
+            this.parentNode.removeChild(this);
+        })
+
     }
     async readProducts() {
         const response = await fetch('https://66560fd13c1d3b60293c1866.mockapi.io/Products');
@@ -48,30 +54,40 @@ export class pageProducts extends LitElement {
         }
 
         }
-        catchMaterials(element,SelectedMaterials){
-            let elementQuantity=0;
-            let tagElement=""
-            let priceElement=0;
-            let total=0;
-            Object.entries(SelectedMaterials).map(([key, item]) =>{
-                if(key===`${element}Cuantity`){
-                    elementQuantity=item
-                }
-                if(key===`${element}` && item!='N/A'){
-                    tagElement= item
-                    Object.entries(this.inventory).map(([keys, items]) =>{
-                        if((items['category']===element) && (items['tag']===tagElement)){
-                            priceElement= items['price']
-                        }
-                    })
+    catchMaterials(element,SelectedMaterials){
+        let elementQuantity=0
+        let productUnit=''
+        let tagElement=""
+        let priceElement=0;
+        let total=0;
+        let productAvailability
+        
+        Object.entries(SelectedMaterials).map(([key, item]) =>{
+            if(key===`${element}Cuantity`){
+                elementQuantity=item
+                Object.entries(SelectedMaterials).map(([key, item]) =>{
+                    if(key===`${element}` && item!='N/A'){
+                        tagElement= item
+                        Object.entries(this.inventory).map(([keys, items]) =>{
+                            if((items['category']===element) && (items['tag']===tagElement)){
+                                priceElement= items['price']
+                                productAvailability=items['stock']
+                                productUnit=items['unit']
+                                this.availability[element]=[tagElement,parseInt(productAvailability),parseInt(elementQuantity),productUnit,priceElement]        
+                            }})}
+                })
+            }
+            
+            total=(elementQuantity*priceElement)       
+        })  
+        return total
+    }
 
-                }
-                
-                total=(elementQuantity*priceElement)
-                
-            })
-            return total
-        }
+    nextpage(){
+        const formpage='<page-form></page-form>';
+        this.parentNode.insertAdjacentHTML('beforeend',formpage);
+    }
+
     static styles = css` 
     img{
         width:100%;   
@@ -80,20 +96,41 @@ export class pageProducts extends LitElement {
         display:inline-block;
         width:250px;
     }
+    .big-img{
+        position:relative;
+    }
+    .product-img{
+        width:250px;
+    }
+    .bot-img{
+        display:flex;
+        position:absolute;
+        width:30%;
+        bottom:1.5%;
+        left:0px;
+    }
+    .title{
+        position:absolute;
+        width:70%;
+        bottom:1.5%;
+        right:0px;
+        backgroundColor:white;
+    }
     `
     
     render() {
         return html`
+        <a class="backButton">Go Back </a>
         <div class="cards-container "  >
         ${Object.entries(this.products).map(([key, item]) => html`
                 
             <a class="card" id="${key}" >
-            <div>${item['name']}</div>
-                <div class="big-img">
-                <img style="background-color:${item['materialInfo']['telaColor']}" src=${item['image']} alt="picture">
+            <div class="big-img">
+                <div class="title">${item['name']}</div>
+                <img class="product-img" style="background-color:${item['materialInfo']['fabricColor']}" src=${item['image']} alt="picture">
                 <div class="bot-img">
-                ${item['materialInfo']['hiloColor'] ? this.exist(item['materialInfo']['hiloColor'],'hilo'):this.noExist('hilo')}
-                ${item['materialInfo']['botonesColor'] ? this.exist(item['materialInfo']['botonesColor'],'botones'):this.noExist('botones')}
+                ${item['materialInfo']['threadColor'] ? this.exist(item['materialInfo']['threadColor'],'hilo'):this.noExist('hilo')}
+                ${item['materialInfo']['buttonsColor'] ? this.exist(item['materialInfo']['buttonsColor'],'botones'):this.noExist('botones')}
                 </div>
                 </div>
             </a>
@@ -110,7 +147,8 @@ export class pageProducts extends LitElement {
             <img src="../../imgs/no${material}.png">`
         }
 
-    
+
+        
         
     }
 
