@@ -367,6 +367,9 @@ export class pageSearch extends LitElement {
         .submit{
             align-self:center;
         }
+        .form-container{
+          align-items:center;
+        }
         }
     `;
     static get properties() {
