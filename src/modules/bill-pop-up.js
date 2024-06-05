@@ -7,6 +7,7 @@ export class billPopUp extends LitElement{
         .grande{
             width: 95%;
             margin:2.5%;
+            text-align:center;
         }
 
         .button-container {
@@ -122,29 +123,51 @@ export class billPopUp extends LitElement{
         .submit:hover::before {
             width: 100%;
         }
-
-        table {
-            border-collapse: collapse;
-            display: flex;
-            text-align: center; 
-        }
-
-        
-        
-        td, th {
-            border: 1px dotted #000;
-            padding: 8px;
-            text-align: left;
-            background-color: #fff;
-            color:#3c3c3c;
-        }
         th {
             background-color: #ccc;
             color:#3c3c3c;
         }
-        .materials{
-            font-size:8px;
+        table {
+            border-collapse: collapse;
+            font-family: Tahoma, Geneva, sans-serif;
+            width:100%;
         }
+        td, th {
+            padding: 15px;
+        }
+        th {
+            background-color: #48515B;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 13px;
+            border: 1px dotted #000;
+
+        }
+        td {
+            color: #636363;
+            border: 1px dotted #000;
+
+        }
+        tr {
+            background-color: #f9fafb;
+        }
+        .title{
+            font-size:3.3em;
+            text-align:center;
+            font-weight: 600;
+            background-image: linear-gradient(to right, #ffff 15%, #14e2cd);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        @media (max-width: 600px) {
+            .materials, .indirectCost{
+                overflow-x:scroll;
+            }
+            .title{
+            font-size:3.1em;}}
+
         .print-btn {
             width: 100px;
             height: 50px;
@@ -243,22 +266,23 @@ export class billPopUp extends LitElement{
         </div>
         <div class="grande">
             
-            <div class="titlesDiv">
-                <h3>Bill ID: ${this.billInfo['tag']}</h3>
-                <h3>Productos a fabricar: ${this.billInfo['quantity']}</h3>
-                
-            </div>
+
+        <div class="title">PEPITAS CONFECTIONS</div>
+
+            <h3>Bill ID: ${this.billInfo['tag']}</h3>
+
             
-            
-            
-            <h2>Material's Info</h2>
-            <div class="materials"> 
-                ${this.ShowMaterials()} 
-            </div>
+            <h1>Productos a fabricar: ${this.billInfo['quantity']}</h1>
+            <hr>    
             
             <h2>Efective Percent</h2>
             <div class="efective"> 
                 ${this.ShowEfective()}  
+            </div>
+
+            <h2>Material's Info</h2>
+            <div class="materials"> 
+                ${this.ShowMaterials()} 
             </div>
             
             <h2>Employees's Info</h2>
@@ -271,7 +295,7 @@ export class billPopUp extends LitElement{
                 ${this.ShowIndirectCost()}
             </div>
             
-            <h2>Total Info</h2>
+            <h2>Total Price</h2>
             <div class="total">
                 ${this.ShowTotal()}
             </div>
@@ -321,28 +345,34 @@ export class billPopUp extends LitElement{
         console.log(data)
         return html`
         <table>
-            <tr>
-                <th>Type</th>
-                <th>Tag</th>
-                <th>Quantity/unit</th>
-                <th>Total quantity</th>
-                <th>Unity</th>
-                <th>Price/Unit</th>
-                <th>Total Price</th>
-            </tr>
-            ${Object.entries(data).map(([key, item]) =>{
-                return html`
+            <thead>
                 <tr>
-                    <td>${key}</td>
-                    <td>${item[0]}</td>
-                    <td>${item[2]}</td>
-                    <td>${item[5]}</td>
-                    <td>${item[3]}</td>
-                    <td>${item[4]}</td>
-                    <td>${((item[4])*(item[5]))}</td>
-                </tr>`
-            } )}
+                    <th>Type</th>
+                    <th>Tag</th>
+                    <th>Quantity/unit</th>
+                    <th>Total quantity</th>
+                    <th>Unity</th>
+                    <th>Price/Unit</th>
+                    <th>Total price</th>
+                </tr>
+            </thead>
+        ${Object.entries(data).map(([key, item]) =>{
+            return html`
+        <tbody>
+            <tr>
+                <td>${key}</td>
+                <td>${item[0]}</td>
+                <td>${item[2]}</td>
+                <td>${item[5]}</td>
+                <td>${item[3]}</td>
+                <td>${item[4]}</td>
+                <td>${this.totalMaterials = ((item[4])*(item[5]))}</td>
+            </tr>
+        </tbody>
+        `
+    } )}
         </table>
+        <h2 style="text-align:right; margin: 2em 1em;">SubTotal: ${this.billInfo['totalProducts']}</h2>
         `
     }
 
@@ -358,6 +388,7 @@ export class billPopUp extends LitElement{
                 <th>Paycheck</th>
             </tr>
             ${Object.entries(data).map(([key, item]) =>{
+                this.totalEmployees = ((item[4])*(item[5]))
                 return html`
                 <tr>
                     <td>${key}</td>
@@ -368,6 +399,7 @@ export class billPopUp extends LitElement{
                 </tr>`
             } )}
         </table>
+        <h2 style="text-align:right; margin:2em 1em;">Subtotal: ${this.billInfo['totalEmployees']}</h2>
         `
     }
 
@@ -396,6 +428,7 @@ export class billPopUp extends LitElement{
                 </tr>`
             } )}
         </table>
+        <h2 style="text-align:right; margin:2em 1em;">Subtotal: ${Number((this.billInfo['totalIndirect']).toFixed(2))}</h2>
         `
     }
     ShowTotal(){
@@ -405,15 +438,14 @@ export class billPopUp extends LitElement{
                 <th>Material Price</th>
                 <th>Employees Salarys</th>
                 <th>Indirect Cost</th>
-                <th>Total Price</th>
             </tr>
             <tr>
                 <td>${this.billInfo['totalProducts']}</td>
                 <td>${this.billInfo['totalEmployees']}</td>
                 <td>${Number((this.billInfo['totalIndirect']).toFixed(2))}</td>
-                <td>${Number((this.billInfo['totalPrice']).toFixed(2))}</td>
             </tr>
         </table>
+        <h2 style="text-align:right; margin:2em 1em;">Total: ${Number((this.billInfo['totalPrice']).toFixed(2))}</h2>
         `
     }
     ShowNotes(){
