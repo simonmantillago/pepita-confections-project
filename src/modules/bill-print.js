@@ -142,9 +142,148 @@ export class billPrint extends LitElement{
     .materials{
         font-size:8px;
     }
+    .titlesDiv{
+        display:flex;
+        flex-direction:column;
+      }
+      .back-button {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        --primary-color: #ffff;
+        --hovered-color: #ffff;
+        position: relative;
+        display: flex;
+        font-weight: 600;
+        font-size: 20px;
+        gap: 0.5rem;
+        align-items: center;
+      }
+    
+      .back-button p {
+        margin: 0;
+        position: relative;
+        font-size: 20px;
+        color: var(--primary-color);
+      }
+    
+      .back-button::after {
+        position: absolute;
+        content: "";
+        width: 0;
+        right: 0;
+        bottom: -7px;
+        background: var(--hovered-color);
+        height: 2px;
+        transition: 0.3s ease-out;
+      }
+    
+      .back-button p::before {
+        position: absolute;
+        content: "Go back";
+        width: 0%;
+        inset: 0;
+        color: var(--hovered-color);
+        overflow: hidden;
+      }
+    
+      .back-button:hover::after {
+        width: 100%;
+        left: auto;
+        right: 0;
+      }
+    
+      .back-button:hover p::before {
+        width: 100%;
+      }
+    
+      .back-button:hover svg {
+        transform: translateX(-4px);
+        color: var(--hovered-color);
+      }
+    
+      .back-button svg {
+        color: var(--primary-color);
+        transition: 0.2s;
+        position: relative;
+        width: 15px;
+        transition-delay: 0.2s;
+      }
+    
+      .back-button-container {
+        align-self: center;
+      }
+      .print-btn {
+        width: 100px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(0, 123, 255);
+        border: 1px solid rgb(0, 123, 255);
+        border-radius: 10px;
+        gap: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        overflow: hidden;
+        font-weight: 500;
+        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.065);
+        transition: all 0.3s;
+        color:white;
+      }
+      .printer-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 100%;
+      }
+      .printer-container {
+        height: 50%;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      
+      .printer-container svg {
+        width: 100%;
+        height: auto;
+        transform: translateY(4px);
+      }
+      .printer-page-wrapper {
+        width: 100%;
+        height: 50%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+      }
+      .printer-page {
+        width: 70%;
+        height: 10px;
+        border: 1px solid white;
+        background-color: white;
+        transform: translateY(0px);
+        transition: all 0.3s;
+        transform-origin: top;
+      }
+      .print-btn:hover .printer-page {
+        height: 16px;
+      }
+      
+      .print-btn:hover {
+        background-color: #018bff;
+      }
     @media (min-width: 600px) {
         .materials{
             font-size:15px;
+        }
+        .titlesDiv{
+            flex-direction:row;
+            justify-content:space-between;
         }
     }
 `
@@ -159,14 +298,16 @@ export class billPrint extends LitElement{
     render(){
         return html`
         <div class="grande">
-            <button id="backButton" type="button" class="back-button">Go back</button>
-            <div>
+        <button class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
+        </svg>
+        <p>Go back</p>
+    </button>
+            <div class="titlesDiv">
                 <h3>Bill ID: ${this.billInfo['tag']}</h3>
-                
-            </div>
-            
-            <div>
                 <h3>Productos a fabricar: ${this.billInfo['quantity']}</h3>
+                
             </div>
             
             <h2>Material's Info</h2>
@@ -199,7 +340,35 @@ export class billPrint extends LitElement{
             </div>
         </div>
         <div class="button-container">
-            <a @click="${(event) => print()}"> Imprimir</a>
+        <button class="print-btn" @click="${() => print()}">
+        <span class="printer-wrapper">
+        <span class="printer-container">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 92 75">
+    <path
+  stroke-width="5"
+  stroke="white"
+  d="M12 37.5H80C85.2467 37.5 89.5 41.7533 89.5 47V69C89.5 70.933 87.933 72.5 86 72.5H6C4.067 72.5 2.5 70.933 2.5 69V47C2.5 41.7533 6.75329 37.5 12 37.5Z"
+></path>
+<mask fill="white" id="path-2-inside-1_30_7">
+  <path
+    d="M12 12C12 5.37258 17.3726 0 24 0H57C70.2548 0 81 10.7452 81 24V29H12V12Z"
+  ></path>
+</mask>
+<path
+  mask="url(#path-2-inside-1_30_7)"
+  fill="white"
+  d="M7 12C7 2.61116 14.6112 -5 24 -5H57C73.0163 -5 86 7.98374 86 24H76C76 13.5066 67.4934 5 57 5H24C20.134 5 17 8.13401 17 12H7ZM81 29H12H81ZM7 29V12C7 2.61116 14.6112 -5 24 -5V5C20.134 5 17 8.13401 17 12V29H7ZM57 -5C73.0163 -5 86 7.98374 86 24V29H76V24C76 13.5066 67.4934 5 57 5V-5Z"
+></path>
+<circle fill="white" r="3" cy="49" cx="78"></circle>
+</svg>
+</span>
+
+<span class="printer-page-wrapper">
+<span class="printer-page"></span>
+</span>
+</span>
+Print
+</button>
         </div>
         `
     }
