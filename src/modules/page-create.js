@@ -172,6 +172,16 @@ export class pageCreate extends LitElement {
     width: 100%;
     height: 50px;
   }
+  .warning {
+    color: red;
+    font-size: 1em;
+    text-align: center;
+    display: none; /* Hidden by default */
+  }
+
+  .warning.show {
+    display: block; /* Show when form is invalid */
+  }
 
   @media (min-width: 600px) {
     .form-container {
@@ -192,238 +202,212 @@ connectedCallback() {
   this.materials = [];
   this.isReady = false;
 }
-  render() {
-    return html`
-      <div class="container">
-        <div class="title-create">${this.crudOption} ${this.type}</div>
-        <form class="form-container">
-          ${Object.entries(data[this.type][this.crudOption]).map(
-            ([key, item]) => {
-              if (Array.isArray(item[1])) {
-                return html`
-                  <div>
-                    <label for="options">${item[0]}</label>
-                    <select id="options" name="${key}">
-                      ${item[1].map((element) => {
-                        return html` <option>${element}</option> `;
 
-                      })}
-                    </select>
-                  </div>
-                `;
-
-              } else {
-                return html`
-                <div class="${key}">
-                  <label for="${key}" class="form__label">${item[0] === "date" || item[0] === "color" ? item[1] : item[1]}</label>
-                  <input type=${item[0]} class="form__field" required="" id="${key}" name="${key}"/>
-                </div>
+render() {
+  return html`
+    <div class="container">
+      <div class="title-create">${this.crudOption} ${this.type}</div>
+      <form class="form-container" @input="${this.checkFormValidity}">
+        ${Object.entries(data[this.type][this.crudOption]).map(
+          ([key, item]) => {
+            if (Array.isArray(item[1])) {
+              return html`
+                <div>
+                  <label for="options">${item[0]}</label>
+                  <select id="options" name="${key}">
+                    ${item[1].map((element) => {
+                      return html` <option>${element}</option> `;
+                    })}
+                  </select>
                 </div>
               `;
-              }9
+            } else {
+              return html`
+              <div class="${key}">
+                <label for="${key}" class="form__label">${item[0] === "date" || item[0] === "color" ? item[1] : item[1]}</label>
+                <input type=${item[0]} class="form__field" required="" id="${key}" name="${key}"/>
+              </div>
+              `;
             }
-          )}
-          ${this.type === "Products" ? this.newhtml() : ""}
-        </form>
-        <button class="submit">Submit</button>
-        <div class="back-button-container">
-          <button class="back-button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
-            </svg>
-            <p>Go back</p>
-          </button>
-        </div>
-      </div>
-
-
-    `;
-  }
-
-  resetColorForm() {
-    // Selecciona todos los elementos que necesitan ser reseteados
-    const materialUnits = this.shadowRoot.querySelectorAll('.utility');
-    const materialColors = this.shadowRoot.querySelectorAll('.colorDisable');
-  
-    // Deshabilita y limpia los valores de los campos
-    materialUnits.forEach(unit => {
-      unit.disabled = true;
-      unit.value = "";
-    });
-  
-    materialColors.forEach(color => {
-      color.disabled = true;
-      color.value = "";
-      color.style.backgroundColor = "transparent";
-    });
-  }
-  
-  firstUpdated() {
-    if (this.type === "Products") {
-      this.findData();
-    }
-  
-    const backbutton = this.shadowRoot.querySelector(".back-button");
-    backbutton.addEventListener("click", () => {
-      const principalPage = `<principal-pages></principal-pages>`;
-      this.parentNode.insertAdjacentHTML("beforeend", principalPage);
-      this.parentNode.removeChild(this);
-    });
-
-  
-    const submmitButton = this.shadowRoot.querySelector(".submit");
-    submmitButton.addEventListener("click", async (event) => {
-      event.preventDefault(); // Evita el comportamiento predeterminado del botón submit
-      const container = this.shadowRoot.querySelector(".form-container");
-      const data = Object.fromEntries(new FormData(container).entries());
-      const inputData = JSON.parse(JSON.stringify(data));
-      if (this.type == "Inventory") {
-        const {
-          tag,
-          name,
-          description,
-          category,
-          supplier,
-          price,
-          unit,
-          stock,
-          buydate,
-          duedate,
-          location,
-          notes,
-          color,
-        } = inputData;
-        this.Submit = {
-          tag: tag,
-          name: name,
-          description: description,
-          category: category,
-          supplier: supplier,
-          price: price,
-          unit: unit,
-          stock: stock,
-          adate: buydate,
-          ddate: duedate,
-          location: location,
-          notes: notes,
-          color: color,
-        };
-      } else if (this.type === "Products") {
-        const { tag, image, name, ...materials } = inputData;
-        const imgUrl = `/imgs/${image}.png`;
-        this.Submit = {
-          name: name,
-          tag: tag,
-          image: imgUrl,
-          materialInfo: materials,
-          category:image
-        };
-      }
-      try {
-        const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.Submit),
           }
-        );
-  
-        if (!response.ok) {
-          throw new Error("Error al enviar POST al MockAPI");
-        }
-  
-        const responseData = await response.json();
-        console.log("Respuesta de la API:", responseData);
-      } catch (error) {
-        console.error("Error al enviar POST a la API:", error);
-      }
-  
-      container.reset();
-      this.resetColorForm();
-      this.requestUpdate();
-    });
-  }
-    async findData() {
-      try {
-          const response = await fetch(
-              `https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`
-          );
-          this.materials = await response.json();
-          this.isReady = true;
-          this.requestUpdate(); // Trigger a re-render to display materials
-      } catch (error) {
-          console.error("Error fetching materials:", error);
-      }
-  }
-
-  newhtml() {
-      return html`
-    ${data["Inventory"]["create"]["category"][1].map((element) => {
-          return html`${this.createMaterialsHtml(element)}`;
-      })}
+        )}
+        ${this.type === "Products" ? this.newhtml() : ""}
+      </form>
+      <div class="warning">Please fill out all fields before submitting.</div>
+      <button class="submit" disabled>Submit</button>
+      <div class="back-button-container">
+        <button class="back-button">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 5L3 12m0 0l7 7m-7-7h18" ></path>
+          </svg>
+          <p>Go back</p>
+        </button>
+      </div>
+    </div>
   `;
+}
+
+resetColorForm() {
+  const materialUnits = this.shadowRoot.querySelectorAll('.utility');
+  const materialColors = this.shadowRoot.querySelectorAll('.colorDisable');
+
+  materialUnits.forEach(unit => {
+    unit.disabled = true;
+    unit.value = "";
+  });
+
+  materialColors.forEach(color => {
+    color.disabled = true;
+    color.value = "";
+    color.style.backgroundColor = "transparent";
+  });
+}
+
+firstUpdated() {
+  if (this.type === "Products") {
+    this.findData();
   }
 
+  const backbutton = this.shadowRoot.querySelector(".back-button");
+  backbutton.addEventListener("click", () => {
+    const principalPage = `<principal-pages></principal-pages>`;
+    this.parentNode.insertAdjacentHTML("beforeend", principalPage);
+    this.parentNode.removeChild(this);
+  });
 
+  const submitButton = this.shadowRoot.querySelector(".submit");
+  submitButton.addEventListener("click", async (event) => {
+    event.preventDefault(); 
+    const container = this.shadowRoot.querySelector(".form-container");
+    const data = Object.fromEntries(new FormData(container).entries());
+    const inputData = JSON.parse(JSON.stringify(data));
+    if (this.type == "Inventory") {
+      const {
+        tag, name, description, category, supplier, price, unit,
+        stock, buydate, duedate, location, notes, color
+      } = inputData;
+      this.Submit = {
+        tag, name, description, category, supplier, price, unit,
+        stock, adate: buydate, ddate: duedate, location, notes, color
+      };
+    } else if (this.type === "Products") {
+      const { tag, image, name, ...materials } = inputData;
+      const imgUrl = `/imgs/${image}.png`;
+      this.Submit = {
+        name, tag, image: imgUrl, materialInfo: materials, category: image
+      };
+    }
+    try {
+      const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/${this.type}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(this.Submit),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error al enviar POST al MockAPI");
+      }
+      const responseData = await response.json();
+      console.log("Respuesta de la API:", responseData);
+    } catch (error) {
+      console.error("Error al enviar POST a la API:", error);
+    }
+    container.reset();
+    this.resetColorForm();
+    this.requestUpdate();
+  });
+}
 
-createMaterialsHtml(material) {
+async findData() {
+  try {
+    const response = await fetch(`https://66560fd13c1d3b60293c1866.mockapi.io/Inventory`);
+    this.materials = await response.json();
+    this.isReady = true;
+    this.requestUpdate(); 
+  } catch (error) {
+    console.error("Error fetching materials:", error);
+  }
+}
+
+newhtml() {
   return html`
-<div >
-  <label for=${material}>${material}</label>
-  <select id=${material} name=${material} @change="${(event) => this.materialSelected(event, material)}" >
-    <option value="N/A">N/A</option>
-    ${this.renderMaterials(material)}
-  </select>
-  <input type="number" class="form__field ${material}Cuantity utility" placeholder="" required="" id="${material}Cuantity" name="${material}Cuantity" disabled />
-  <input id="${material}Unit" name="${material}Unit" class="${material}Unit utility" disabled />
-  <input id="${material}Color" name="${material}Color" class="${material}color utility colorDisable" disabled />
-</div>
+  ${data["Inventory"]["create"]["category"][1].map((element) => {
+    return html`${this.createMaterialsHtml(element)}`;
+  })}
 `;
 }
 
-  renderMaterials(materialType) {
-      if (this.isReady) {
-          return this.materials.map(material => {
-              if (material['category'] === materialType) {
-                  return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
-              }
-          });
-      }
-      return html``;
-  }
-         
-  materialSelected(event, material){
-      const isNA = event.target.value
-      const selectedMaterial = event.target;
-      const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
-      const unit = selectedOption.getAttribute('unit');
-      const color = selectedOption.getAttribute('materialColor');
-      const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
-      const materialColor = this.shadowRoot.querySelector(`.${material}color`)
-      const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
-      if(isNA==="N/A"){
-          cuantityInput.disabled=true
-          materialColor.disabled=true
-          materialUnit.disabled=true
-          materialUnit.value= ""
-          cuantityInput.value= ""
-          materialColor.value =""
-          materialColor.style.backgroundColor="transparent"
-          
-      }else{
-          cuantityInput.disabled=false
-          materialColor.disabled=false
-          materialUnit.disabled=false
-          materialUnit.setAttribute("readonly", "readonly")
-          materialColor.setAttribute("readonly", "readonly")
-          materialUnit.value= unit
-          materialColor.value =color
-          materialColor.style.color=(color)
-          materialColor.style.backgroundColor=(color)}
-  }
+createMaterialsHtml(material) {
+  return html`
+  <div>
+    <label for=${material}>${material}</label>
+    <select id=${material} name=${material} @change="${(event) => this.materialSelected(event, material)}" required>
+      <option value="N/A">N/A</option>
+      ${this.renderMaterials(material)}
+    </select>
+    <input type="number" class="form__field ${material}Cuantity utility" placeholder="" required="" id="${material}Cuantity" name="${material}Cuantity" disabled />
+    <input id="${material}Unit" name="${material}Unit" class="${material}Unit utility" disabled />
+    <input id="${material}Color" name="${material}Color" class="${material}color utility colorDisable" disabled />
+  </div>
+  `;
 }
 
+renderMaterials(materialType) {
+  if (this.isReady) {
+    return this.materials.map(material => {
+      if (material['category'] === materialType) {
+        return html`<option materialColor="${material['color']}" unit="${material['unit']}">${material['tag']}</option>`;
+      }
+    });
+  }
+  return html``;
+}
 
-customElements.define("page-create", pageCreate) 
+materialSelected(event, material) {
+  const isNA = event.target.value
+  const selectedMaterial = event.target;
+  const selectedOption = selectedMaterial.options[selectedMaterial.selectedIndex];
+  const unit = selectedOption.getAttribute('unit');
+  const color = selectedOption.getAttribute('materialColor');
+  const materialUnit = this.shadowRoot.querySelector(`.${material}Unit`)
+  const materialColor = this.shadowRoot.querySelector(`.${material}color`)
+  const cuantityInput = this.shadowRoot.querySelector(`.${material}Cuantity`)
+  if (isNA === "N/A") {
+    cuantityInput.disabled = true
+    materialColor.disabled = true
+    materialUnit.disabled = true
+    materialUnit.value = ""
+    cuantityInput.value = ""
+    materialColor.value = ""
+    materialColor.style.backgroundColor = "transparent"
+  } else {
+    cuantityInput.disabled = false
+    materialColor.disabled = false
+    materialUnit.disabled = false
+    materialUnit.setAttribute("readonly", "readonly")
+    materialColor.setAttribute("readonly", "readonly")
+    materialUnit.value = unit
+    materialColor.value = color
+    materialColor.style.color = (color)
+    materialColor.style.backgroundColor = (color)
+  }
+  this.checkFormValidity();
+}
+
+checkFormValidity() {
+  const form = this.shadowRoot.querySelector('.form-container');
+  const submitButton = this.shadowRoot.querySelector('.submit');
+  const warningMessage = this.shadowRoot.querySelector('.warning');
+
+  if (form.checkValidity()) {
+    submitButton.disabled = false;
+    warningMessage.classList.remove('show');
+  } else {
+    submitButton.disabled = true;
+    warningMessage.classList.add('show');
+  }
+}
+}
+
+customElements.define("page-create", pageCreate);
